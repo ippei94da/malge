@@ -25,7 +25,7 @@ end
 # 連立1次方程式を表現するクラス。
 class SimultaneousEquations
 	
-	# Cramer の公式で解くクラスメソッド。
+	# Solve equation by Cramer's.
 	# matrix は2重配列で与える。
 	# 返されるのは、解の値を格納した配列。
 	def self.cramer( matrix, values )
