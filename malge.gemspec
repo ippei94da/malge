@@ -4,14 +4,15 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "malge"
+  s.name = %q{malge}
   s.version = "0.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ippei94da"]
-  s.date = "2012-04-04"
-  s.description = "Mathematical library to deal with basic problems in algebla.\n  "
-  s.email = "ippei94da@gmail.com"
+  s.date = %q{2012-04-04}
+  s.description = %q{Mathematical library to deal with basic problems in algebla.
+  }
+  s.email = %q{ippei94da@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -29,13 +30,14 @@ Gem::Specification.new do |s|
     "test/helper.rb",
     "test/test_simultaneousequations.rb"
   ]
-  s.homepage = "http://github.com/ippei94da/malge"
+  s.homepage = %q{http://github.com/ippei94da/malge}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.21"
-  s.summary = "Math ALGEbra library."
+  s.rubygems_version = %q{1.3.7}
+  s.summary = %q{Math ALGEbra library.}
 
   if s.respond_to? :specification_version then
+    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
