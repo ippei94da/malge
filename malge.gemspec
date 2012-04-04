@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ippei94da"]
-  s.date = "2012-04-03"
+  s.date = "2012-04-04"
   s.description = "Mathematical library to deal with basic problems in algebla.\n  "
   s.email = "ippei94da@gmail.com"
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/malge.rb",
     "lib/malge/simultaneousequations.rb",
+    "malge.gemspec",
     "test/helper.rb",
     "test/test_simultaneousequations.rb"
   ]
