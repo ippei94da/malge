@@ -1,4 +1,4 @@
-class Malge; end
+module Malge; end
 
 require "malge/simultaneousequations.rb"
 require "malge/leastsquare.rb"
