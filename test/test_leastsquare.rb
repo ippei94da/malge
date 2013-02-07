@@ -36,7 +36,7 @@ class TC_Malge < Test::Unit::TestCase
       [  9.000,   6.645],
       [ 10.000,   7.962],
     ]
-    #should be below, confirmed by Excel
+    #should be below, confirmed by Excel.
     a0 = -2.0787619047619
     a1 =  1.00077142857143
 
@@ -44,6 +44,29 @@ class TC_Malge < Test::Unit::TestCase
     assert_equal(2, results.size)
     assert_in_delta(a0, results[0], TOLERANCE)
     assert_in_delta(a1, results[1], TOLERANCE)
+  end
+
+  def test_least_square_exp
+    data_pairs =
+    [
+      [0.0, 14.0],
+      [1.0, 12.0],
+      [2.0, 11.0],
+    ]
+    # y = a e^{bx} + c
+    # should be
+    # y = 4.0 exp^{- log_e 2 x} + 10
+    a0 = 4.0
+    a1 = - Math::log(2.0)
+    a2 = 10.0
+
+    tolerance0 = 1.0E-5
+    results = Malge::LeastSquare.least_square_exp(data_pairs, tolerance0)
+    assert_equal(3, results.size)
+    tolerance1 = 1.0E-3
+    assert_in_delta(a0, results[0], tolerance1)
+    assert_in_delta(a1, results[1], tolerance1)
+    assert_in_delta(a2, results[2], tolerance1)
   end
 end
 

@@ -34,5 +34,19 @@ module Malge::LeastSquare
     a_0 = (a*e - c*d) / (n*a - c**2)
     [a_0, a_1]
   end
+
+  # Argument 'data_pairs' should be Array of Array's. For example,
+  #   [
+  #     [0.0, 14.0],
+  #     [1.0, 12.0],
+  #     [2.0, 11.0],
+  #   ]
+  # return values of [a, b, c] in y = a e^{bx} + c.
+  # 'tolerance' is indicated by tolerant width of c.
+  def self.least_square_exp(data_pairs, tolerance)
+    data_pairs.max_by 
+
+    c_s = []
+  end
 end
 
