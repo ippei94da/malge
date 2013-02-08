@@ -1,9 +1,13 @@
 = vasputils changelog
 
-== Master (for 0.0.3)
+== Master (for 0.0.4)
+
+== Version 0.0.3
+* Add Malge::LeastSquare::a_exp_bx
+* Add Malge::LeastSquare::least_square_a_exp_bx
 
 == Version 0.0.2
-  - Change indent style from tab char to two spaces.
-  - Add lib/malge/leastsquare.rb for Malge::LeastSquare::least_square_1st_degree
+* Change indent style from tab char to two spaces.
+* Add lib/malge/leastsquare.rb for Malge::LeastSquare::least_square_1st_degree
 
 == Version 0.0.1

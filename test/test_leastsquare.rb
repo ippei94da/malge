@@ -1,5 +1,5 @@
 #! /usr/bin/env ruby
-# coding: utf-8
+#coding: utf-8
 
 require "test/unit"
 require "malge.rb"
@@ -8,7 +8,7 @@ TOLERANCE=1.0e-10
 
 class TC_Malge < Test::Unit::TestCase
   #def setup
-  #  @k = Malge.new
+  # @k = Malge.new
   #end
 
   def test_least_square_1st_degree
@@ -46,27 +46,89 @@ class TC_Malge < Test::Unit::TestCase
     assert_in_delta(a1, results[1], TOLERANCE)
   end
 
-  def test_least_square_exp
-    data_pairs =
-    [
-      [0.0, 14.0],
-      [1.0, 12.0],
-      [2.0, 11.0],
+  def test_variance_1st_degree
+    data_pairs = [
+      [0.0, -1.0],
+      [1.0,  2.0],
+      [2.0,  3.0],
+      [3.0,  2.0],
     ]
-    # y = a e^{bx} + c
-    # should be
-    # y = 4.0 exp^{- log_e 2 x} + 10
-    a0 = 4.0
-    a1 = - Math::log(2.0)
-    a2 = 10.0
-
-    tolerance0 = 1.0E-5
-    results = Malge::LeastSquare.least_square_exp(data_pairs, tolerance0)
-    assert_equal(3, results.size)
-    tolerance1 = 1.0E-3
-    assert_in_delta(a0, results[0], tolerance1)
-    assert_in_delta(a1, results[1], tolerance1)
-    assert_in_delta(a2, results[2], tolerance1)
+    assert_equal( 4.0, Malge::LeastSquare::variance_1st_degree(data_pairs))
   end
+
+  def test_a_exp_bx
+    data_pairs = [
+      [0.0, 4.0],
+      [1.0, 2.0],
+    ]
+    #y = a e^{bx}
+    #should be
+    #y = 4.0 exp^{- log_e 2 x}
+    corrects = [ 4.0, - Math::log(2.0)]
+    assert_equal(corrects, Malge::LeastSquare.a_exp_bx(data_pairs))
+
+    data_pairs = [
+      [0.0, 1.0],
+      [1.0, 4.0],
+    ]
+    #y = a e^{bx}
+    #should be
+    #y = 4.0 exp^{- log_e 2 x}
+    corrects = [ 1.0, 2.0 * Math::log(2.0)]
+    assert_equal(corrects, Malge::LeastSquare.a_exp_bx(data_pairs))
+
+    data_pairs = [
+      [0.0,  1.0],
+      [1.0,  1.0],
+    ]
+    assert_raise(Malge::LeastSquare::UnableCalculationError){
+      Malge::LeastSquare.a_exp_bx(data_pairs)
+    }
+
+    data_pairs = [
+      [1.0,  1.0],
+      [1.0,  2.0],
+    ]
+    assert_raise(Malge::LeastSquare::UnableCalculationError){
+      Malge::LeastSquare.a_exp_bx(data_pairs)
+    }
+  end
+
+  def test_least_square_a_exp_bx
+    data_pairs = [
+      [0.0, 4.0],
+      [1.0, 2.0],
+      [2.0, 1.0],
+    ]
+    #y = a e^{bx}
+    #should be
+    #y = 4.0 exp^{- log_e 2 x}
+    corrects = [ 4.0, - Math::log(2.0)]
+    results = Malge::LeastSquare.least_square_a_exp_bx(data_pairs)
+    assert_equal(2          , results.size)
+    assert_in_delta(corrects[0], results[0], TOLERANCE)
+    assert_in_delta(corrects[1], results[1], TOLERANCE)
+
+    data_pairs = [
+      [0.0,  1.0],
+      [1.0,  4.0],
+      [2.0, 16.0],
+    ]
+    corrects = [ 1.0, 2.0 * Math::log(2.0)]
+    results = Malge::LeastSquare.least_square_a_exp_bx(data_pairs)
+    assert_equal(2          , results.size)
+    assert_in_delta(corrects[0], results[0], TOLERANCE)
+    assert_in_delta(corrects[1], results[1], TOLERANCE)
+
+    data_pairs = [
+      [0.0, 16.0],
+      [1.0,  4.0],
+      [2.0,  0.0],
+    ]
+    assert_raise(Malge::LeastSquare::UnableCalculationError) do
+      Malge::LeastSquare.least_square_a_exp_bx(data_pairs)
+    end
+  end
+
 end
 
