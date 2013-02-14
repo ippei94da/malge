@@ -5,10 +5,14 @@
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
-class Malge::ErrorFittedFunction::AXInv < Malge::ErrorFittedFunction
+class Malge::ErrorFittedFunction::AExpBX < Malge::ErrorFittedFunction
 
   def fit
-    inv_pairs =  @diff_abs_pairs.map {|pair| [1.0/pair[0], pair[1]]}
+    inv_pairs =  @diff_abs_pairs.map {|pair|
+      x = pair[0]
+      y = Math::log(pair[1])
+      [x,y]
+    }
     @coefficients = Malge::LeastSquare.least_square_1st_degree(inv_pairs)
   end
 
@@ -29,4 +33,5 @@ class Malge::ErrorFittedFunction::AXInv < Malge::ErrorFittedFunction
   end
 
 end
+
 
