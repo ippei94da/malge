@@ -5,11 +5,11 @@
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
-class Malge::ErrorFittedFunction::AExpBX < Malge::ErrorFittedFunction
+class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
 
   def fit
     inv_pairs =  @diff_abs_pairs.map {|pair|
-      x = pair[0]
+      x = pair[0] ** (3.0/2.0)
       y = Math::log(pair[1])
       [x,y]
     }
@@ -18,16 +18,17 @@ class Malge::ErrorFittedFunction::AExpBX < Malge::ErrorFittedFunction
   end
 
   def expected_error(x)
-    @coefficients[0] * Math::exp( @coefficients[1] * x)
+    @coefficients[0] * Math::exp( @coefficients[1] * x **(3.0/2.0))
   end
 
-  #y = a[0] * exp(a[1] *x)
-  #a[0] * exp(a[1] *x) = y
-  #exp(a[1] *x) = y/a[0]
-  #a[1] *x = log( y/a[0])
-  #x = log( y/a[0])/a[1]
+  #y = a[0] * exp(a[1] *x^(3/2))
+  #a[0] * exp(a[1] *x^(3/2)) = y
+  #exp(a[1] *x^(3/2)) = y/a[0]
+  #a[1] *x^(3/2) = log( y/a[0])
+  #x^(3/2) = log( y/a[0])/a[1]
+  #x = (log( y/a[0])/a[1])^(2/3)
   def x(y)
-    return Math::log( y / @coefficients[0])/@coefficients[1]
+    return (Math::log( y / @coefficients[0])/@coefficients[1]) **(2.0/3.0)
   end
 
   def finest_y
