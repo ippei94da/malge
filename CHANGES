@@ -1,6 +1,9 @@
 = vasputils changelog
 
-== Master (for 0.0.4)
+== Master (for 0.0.5)
+
+== Version 0.0.4
+* Add Malge::ErrorFittedFunction and inherited classes.
 
 == Version 0.0.3
 * Add Malge::LeastSquare::a_exp_bx
