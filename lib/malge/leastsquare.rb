@@ -8,7 +8,6 @@ module Malge::LeastSquare
 
   class UnableCalculationError < Exception; end
 
-
   #Return values of [a_0, a_1] in y = a_0 x^0 + a_1 x^1.
   #Argument 'data_pairs' should be Array of Array's. For example,
   #  [
@@ -37,6 +36,22 @@ module Malge::LeastSquare
     a_1 = (n*d - c*e) / (n*a - c**2)
     a_0 = (a*e - c*d) / (n*a - c**2)
     [a_0, a_1]
+  end
+
+  def self.least_square_proportional(data_pairs)
+    a = 0.0 #x^2
+    d = 0.0 #x*y
+    n = data_pairs.size
+    #pp data_pairs
+    data_pairs.each do |pairs|
+      x = pairs[0].to_f
+      y = pairs[1].to_f
+      a += x**2
+      #b += y**2
+      d += x*y
+    end
+    #raise  if d == 0.0
+    d/a
   end
 
   #Return variance when fitted to y = a_0 x^0 + a_1 x^1.

@@ -56,6 +56,17 @@ class TC_Malge < Test::Unit::TestCase
     assert_equal( 4.0, Malge::LeastSquare::variance_1st_degree(data_pairs))
   end
 
+  def test_least_square_proportional
+    data_pairs =
+    [
+      [  1.000,  -2.000],
+      [  1.000,  -1.000],
+    ]
+    result = Malge::LeastSquare.least_square_proportional(data_pairs)
+    assert_in_delta(-1.5, result, TOLERANCE)
+  end
+
+
   def test_a_exp_bx
     data_pairs = [
       [0.0, 4.0],

@@ -1,6 +1,10 @@
 = vasputils changelog
 
-== Master (for 0.0.5)
+== Master (for 0.0.6)
+
+== Version 0.0.5)
+* @raw_pairs and @diff_abs_pairs in Malge::ErrorFittedFunction change to publicly readable.
+* Add Malge::LeastSquare.least_square_proportional.
 
 == Version 0.0.4
 * Add Malge::ErrorFittedFunction and inherited classes.

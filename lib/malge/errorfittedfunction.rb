@@ -7,7 +7,7 @@
 #this class assume true value with the expected most precise value and
 #use absolute value of difference between a data point and the assumed true value.
 class Malge::ErrorFittedFunction
-  attr_reader :coefficients
+  attr_reader :coefficients, :raw_pairs, :diff_abs_pairs
 
   class TypeError < Exception; end
   class SizeMismatchError < Exception; end
@@ -24,7 +24,6 @@ class Malge::ErrorFittedFunction
     end
 
     @raw_pairs = data_pairs
-    #pp finest_y
     @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - finest_y).abs] }
     @diff_abs_pairs.delete_at(-1)
     fit
