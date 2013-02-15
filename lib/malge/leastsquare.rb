@@ -51,7 +51,7 @@ module Malge::LeastSquare
       d += x*y
     end
     #raise  if d == 0.0
-    d/a
+    [d/a]
   end
 
   #Return variance when fitted to y = a_0 x^0 + a_1 x^1.

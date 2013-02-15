@@ -5,15 +5,11 @@ require "test/unit"
 require "malge.rb"
 #require "malge/errorfittedfunction.rb"
 
-#class Malge::ErrorFittedFunction::AXInv32
-#  public :fit
-#end
-
-class TC_ErrorFittedFunction_AXInv32 < Test::Unit::TestCase
+class TC_ErrorFittedFunction_AXInv32PlusB < Test::Unit::TestCase
   TOLERANCE = 1.0E-10
 
   def setup
-    @axi00 = Malge::ErrorFittedFunction::AXInv32.new(
+    @axi00 = Malge::ErrorFittedFunction::AXInv32PlusB.new(
       [
         [ 1, 164.0],
         [ 4, 108.0],
@@ -22,7 +18,7 @@ class TC_ErrorFittedFunction_AXInv32 < Test::Unit::TestCase
       ]
     )
 
-    @axi01 = Malge::ErrorFittedFunction::AXInv32.new(
+    @axi01 = Malge::ErrorFittedFunction::AXInv32PlusB.new(
       [
         [ 1, 164.0],
         [ 4,  92.0],

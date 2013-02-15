@@ -1,6 +1,14 @@
 = vasputils changelog
 
-== Master (for 0.0.6)
+== Master (for 0.0.7)
+
+== Version 0.0.6)
+* Rename Malge::ErrorFittedFunction::AXInv to Malge::ErrorFittedFunction::AXInvPlusB
+* Rename Malge::ErrorFittedFunction::AXInv32 to Malge::ErrorFittedFunction::AXInv32PlusB
+
+* New Malge::ErrorFittedFunction::AXInv   to fit purely inverse proportional function
+* New Malge::ErrorFittedFunction::AXInv32 to fit purely inverse^{3/2} proportional function
+* Change Malge::LeastSquare.least_square_proportional to return an array of one item.
 
 == Version 0.0.5)
 * @raw_pairs and @diff_abs_pairs in Malge::ErrorFittedFunction change to publicly readable.

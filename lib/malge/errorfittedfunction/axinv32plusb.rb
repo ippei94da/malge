@@ -5,7 +5,7 @@
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
-class Malge::ErrorFittedFunction::AXInv32 < Malge::ErrorFittedFunction
+class Malge::ErrorFittedFunction::AXInv32PlusB < Malge::ErrorFittedFunction
 
   def fit
     inv32_pairs =

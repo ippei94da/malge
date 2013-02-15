@@ -5,7 +5,7 @@
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
-class Malge::ErrorFittedFunction::AXInv < Malge::ErrorFittedFunction
+class Malge::ErrorFittedFunction::AXInvPlusB < Malge::ErrorFittedFunction
 
   def fit
     inv_pairs =  @diff_abs_pairs.map {|pair| [1.0/pair[0], pair[1]]}
