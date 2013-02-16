@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "malge"
-  s.version = "0.0.5"
+  s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ippei94da"]
-  s.date = "2013-02-15"
+  s.date = "2013-02-16"
   s.description = "Mathematical library to deal with basic problems in algebla.\n  "
   s.email = "ippei94da@gmail.com"
   s.extra_rdoc_files = [
@@ -30,6 +30,8 @@ Gem::Specification.new do |s|
     "lib/malge/errorfittedfunction/aexpbx32.rb",
     "lib/malge/errorfittedfunction/axinv.rb",
     "lib/malge/errorfittedfunction/axinv32.rb",
+    "lib/malge/errorfittedfunction/axinv32plusb.rb",
+    "lib/malge/errorfittedfunction/axinvplusb.rb",
     "lib/malge/leastsquare.rb",
     "lib/malge/matrix.rb",
     "lib/malge/simultaneousequations.rb",
@@ -41,6 +43,8 @@ Gem::Specification.new do |s|
     "test/test_errorfittedfunction_aexpbx32.rb",
     "test/test_errorfittedfunction_axinv.rb",
     "test/test_errorfittedfunction_axinv32.rb",
+    "test/test_errorfittedfunction_axinv32plusb.rb",
+    "test/test_errorfittedfunction_axinvplusb.rb",
     "test/test_leastsquare.rb",
     "test/test_simultaneousequations.rb"
   ]
