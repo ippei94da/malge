@@ -1,9 +1,10 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
-require "test/unit"
-require "malge.rb"
-require "malge/errorfittedfunction.rb"
+require "helper"
+#require "test/unit"
+#require "malge.rb"
+#require "malge/errorfittedfunction.rb"
 
 class TC_ErrorFittedFunction_AXInvPlusB < Test::Unit::TestCase
   def setup

@@ -1,9 +1,9 @@
 #! /usr/bin/ruby
 
 require "helper"
-require "test/unit"
-require "malge.rb"
-#require "malge/simultaneousequations.rb"
+#require "test/unit"
+#require "malge.rb"
+##require "malge/simultaneousequations.rb"
 
 class TC_SimultaneousEquations < Test::Unit::TestCase
   $tolerance = 10.0**(-10)

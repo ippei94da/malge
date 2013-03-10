@@ -1,6 +1,8 @@
 = vasputils changelog
 
 == Master (for 0.0.7)
+* Add Malge::ErrorFittedFunction::AXInv2
+* Add Malge::ErrorFittedFunction::AXInv3
 
 == Version 0.0.6)
 * Rename Malge::ErrorFittedFunction::AXInv to Malge::ErrorFittedFunction::AXInvPlusB

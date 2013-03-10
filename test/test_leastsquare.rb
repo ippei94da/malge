@@ -1,8 +1,9 @@
 #! /usr/bin/env ruby
 #coding: utf-8
 
-require "test/unit"
-require "malge.rb"
+require "helper"
+#require "test/unit"
+#require "malge.rb"
 
 TOLERANCE=1.0e-10
 

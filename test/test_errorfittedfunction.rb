@@ -1,9 +1,10 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
-require "test/unit"
-require "malge.rb"
-require "malge/errorfittedfunction.rb"
+require "helper"
+#require "test/unit"
+#require "malge.rb"
+#require "malge/errorfittedfunction.rb"
 
 class Malge::ErrorFittedFunction::Dummy00 < Malge::ErrorFittedFunction
   def fit; end
