@@ -35,6 +35,10 @@ class TC_ErrorFittedFunction_AExpBX < Test::Unit::TestCase
   #def test_initialize
   #end
 
+  def test_description
+    assert_equal("f(x) = 4.0 * exp( - 0.6931471805599453 * x)", @aebx00.description)
+  end
+
   def test_fit
     corrects = [4.0, - Math::log(2.0)]
     results = @aebx00.coefficients

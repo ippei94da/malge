@@ -12,6 +12,7 @@ class Malge::ErrorFittedFunction
   class TypeError < Exception; end
   class SizeMismatchError < Exception; end
   class NotImplementedError < Exception; end
+  class UnableCalculationError < Exception; end
 
   #Generate error fitted function from x[i] and y[i].
   #Errors are generated y[i] and y_true assumed by the expected most precise y[i].
@@ -27,6 +28,15 @@ class Malge::ErrorFittedFunction
     @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - finest_y).abs] }
     @diff_abs_pairs.delete_at(-1)
     fit
+
+    @coefficients.each do |coef|
+      raise UnableCalculationError unless coef.finite?
+    end
+  end
+
+  #Return string which is easily readable for people to know the function.
+  def description
+    raise NotImplementedError, "Define #{__method__}() in the inherited class."
   end
 
   #Return expected error at x, condition variable, on the fitted function.

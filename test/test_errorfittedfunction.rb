@@ -36,9 +36,35 @@ class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
 
 end
 
+class Malge::ErrorFittedFunction::Dummy02 < Malge::ErrorFittedFunction
+  def expected_error(x)
+    @coefficients[0] + @coefficients[1] * x
+  end
+
+  #Assume: y = 1.0 + 2.0 * x
+  #x = 1/2( y - 1.0)
+  def x(y)
+    return 1.0/2.0 * (y - 1.0)
+  end
+
+  #Assume: y = 1.0 + 2.0 * x
+  def fit
+    @coefficients = [0.0/0.0, 1.0]
+  end
+
+  def finest_y
+    #max
+    finest_pair = @raw_pairs.max_by { |pair| pair[0] }
+    finest_pair[1]
+
+    #@raw_pairs[x][1]
+  end
+
+end
+
+
 class TC_ErrorFittedFunction < Test::Unit::TestCase
   def setup
-    #@eff00 = Malge::ErrorFittedFunction::Dummy00.new([], [])
     @eff01 = Malge::ErrorFittedFunction::Dummy01.new(
       #2x+1 = 1, -1 
       #2x+1 = 3, +2 
@@ -65,7 +91,17 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     assert_equal(5.0, @eff01.expected_error(2.0))
   end
 
+  def test_description
+    assert_raise(Malge::ErrorFittedFunction::NotImplementedError){
+      @eff01.description
+    }
+  end
+
   def test_initialize
+    assert_raise(Malge::ErrorFittedFunction::NotImplementedError){
+      Malge::ErrorFittedFunction::Dummy00.new([[0.0, 1.0]])
+    }
+
     assert_raise(Malge::ErrorFittedFunction::NotImplementedError){
       Malge::ErrorFittedFunction.new([])
     }
@@ -77,6 +113,10 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     }
     assert_raise(Malge::ErrorFittedFunction::TypeError){
       Malge::ErrorFittedFunction.new([[1,2], 1])
+    }
+
+    assert_raise(Malge::ErrorFittedFunction::UnableCalculationError){
+      Malge::ErrorFittedFunction::Dummy02.new([[1,2]])
     }
   end
 

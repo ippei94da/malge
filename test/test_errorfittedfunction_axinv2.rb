@@ -20,6 +20,10 @@ class TC_ErrorFittedFunction_AXInv2 < Test::Unit::TestCase
   #def test_initialize
   #end
 
+  def test_description
+    assert_equal("f(x) = 16.0 / (x^2)", @axi201.description)
+  end
+
   def test_fit
     assert_equal([16.0], @axi201.coefficients)
   end
