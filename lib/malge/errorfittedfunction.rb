@@ -35,7 +35,7 @@ class Malge::ErrorFittedFunction
   end
 
   #Return string which is easily readable for people to know the function.
-  def description
+  def equation
     raise NotImplementedError, "Define #{__method__}() in the inherited class."
   end
 

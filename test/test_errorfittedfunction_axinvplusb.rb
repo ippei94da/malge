@@ -21,8 +21,8 @@ class TC_ErrorFittedFunction_AXInvPlusB < Test::Unit::TestCase
   #def test_initialize
   #end
 
-  def test_description
-    assert_equal("f(x) = 1.0 + 4.0 / x", @axi01.description)
+  def test_equation
+    assert_equal("f(x) = 1.0 + 4.0 / x", @axi01.equation)
   end
 
   def test_fit

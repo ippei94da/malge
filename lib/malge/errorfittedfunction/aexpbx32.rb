@@ -17,6 +17,10 @@ class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
     @coefficients[0] = Math::exp @coefficients[0]
   end
 
+  def equation
+    sprintf("f(x) = TODO")
+  end
+
   def expected_error(x)
     @coefficients[0] * Math::exp( @coefficients[1] * x **(3.0/2.0))
   end

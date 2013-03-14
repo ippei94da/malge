@@ -33,8 +33,8 @@ class TC_ErrorFittedFunction_AXInv32 < Test::Unit::TestCase
   #def test_initialize
   #end
 
-  def test_description
-    assert_equal("f(x) = 64.0 / (x^(3/2))", @axi00.description)
+  def test_equation
+    assert_equal("f(x) = 64.0 / (x^(3/2))", @axi00.equation)
   end
 
   def test_fit

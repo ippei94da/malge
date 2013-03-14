@@ -91,9 +91,9 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     assert_equal(5.0, @eff01.expected_error(2.0))
   end
 
-  def test_description
+  def test_equation
     assert_raise(Malge::ErrorFittedFunction::NotImplementedError){
-      @eff01.description
+      @eff01.equation
     }
   end
 

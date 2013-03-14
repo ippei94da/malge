@@ -10,6 +10,10 @@ class Malge::ErrorFittedFunction::AXInv3 < Malge::ErrorFittedFunction
     @coefficients = Malge::LeastSquare.least_square_proportional(inv_pairs)
   end
 
+  def equation
+    sprintf("f(x) = TODO")
+  end
+
   def expected_error(x)
     @coefficients[0] / (x**3)
   end
