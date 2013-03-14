@@ -29,11 +29,6 @@ class Malge::ErrorFittedFunction
     fit
   end
 
-  ##Return expected error 
-  #def expected_errors(x)
-  #  raise NotImplementedError, "Define #{__method__}() in the inherited class."
-  #end
-
   #Return expected error at x, condition variable, on the fitted function.
   #Note that this method does not return the error between actual and true value.
   def expected_error(x)
@@ -79,8 +74,5 @@ class Malge::ErrorFittedFunction
     raise NotImplementedError, "Define #{__method__}() in the inherited class."
   end
 
-  #Return the most precise y[i].
-  #This depends on each data and function.
-  #E.g., does a higher or lower value lead precise?
 end
 
