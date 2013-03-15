@@ -26,6 +26,7 @@ class Malge::ErrorFittedFunction
 
     @raw_pairs = data_pairs
     @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - finest_y).abs] }
+    #pp @diff_abs_pairs; exit
     @diff_abs_pairs.delete_at(-1)
     fit
 

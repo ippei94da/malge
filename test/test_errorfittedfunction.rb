@@ -27,11 +27,16 @@ class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
   end
 
   def finest_y
-    #max
-    finest_pair = @raw_pairs.max_by { |pair| pair[0] }
-    finest_pair[1]
 
-    #@raw_pairs[x][1]
+    ##max
+    #finest_pair = @raw_pairs.max_by { |pair| pair[0] }
+    #finest_pair[1]
+
+    ##@raw_pairs[x][1]
+  end
+
+  def most_strict_condition
+    return @raw_pairs.max_by {|pair| pair[1]}
   end
 
 end
@@ -96,6 +101,31 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
       @eff01.equation
     }
   end
+
+  def test_initialize_diff_abs_pairs
+    # not ordered.
+    data = [
+      [1000.0, -3.153327],
+      [1200.0, -3.150316],
+      [1500.0, -3.151397],
+      [ 500.0, -3.11294],
+      [ 600.0, -3.181593],
+      [ 700.0, -3.165176],
+      [ 900.0, -3.152733],
+      [ 500.0, -3.11294]
+    ]
+    aebx02 = Malge::ErrorFittedFunction::Dummy02.new(data)
+    pp aebx02.diff_abs_pairs
+    assert_equal
+
+    TODO
+  end
+
+  def test_most_strict_condition
+    TODO
+    assert_equal(2.0, @eff01.most_strict_condition)
+  end
+
 
   def test_initialize
     assert_raise(Malge::ErrorFittedFunction::NotImplementedError){

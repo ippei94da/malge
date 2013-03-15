@@ -8,11 +8,15 @@
 class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
 
   def fit
+    #pp finest_y
+    #pp @diff_abs_pairs
     inv_pairs =  @diff_abs_pairs.map {|pair|
+      #pp pair
       x = pair[0] ** (3.0/2.0)
       y = Math::log(pair[1])
       [x,y]
     }
+    #pp inv_pairs
     @coefficients = Malge::LeastSquare.least_square_1st_degree(inv_pairs)
     @coefficients[0] = Math::exp @coefficients[0]
   end
