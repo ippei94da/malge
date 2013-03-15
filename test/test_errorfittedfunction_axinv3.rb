@@ -21,7 +21,7 @@ class TC_ErrorFittedFunction_AXInv3 < Test::Unit::TestCase
   #end
 
   def test_equation
-    assert_equal("f(x) = 64.0 / (x^3)", @axi301.equation)
+    assert_equal("f(x) = 64.000000 / (x^3)", @axi301.equation)
   end
 
   def test_fit

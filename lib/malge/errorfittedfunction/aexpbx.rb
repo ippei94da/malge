@@ -18,7 +18,7 @@ class Malge::ErrorFittedFunction::AExpBX < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = TODO")
+    sprintf("f(x) = %f \* exp(%f \* x)", * @coefficients)
   end
 
   def expected_error(x)

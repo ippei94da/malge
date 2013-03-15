@@ -11,7 +11,7 @@ class Malge::ErrorFittedFunction::AXInv3 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = TODO")
+    sprintf("f(x) = %f / (x^3)", * @coefficients)
   end
 
   def expected_error(x)

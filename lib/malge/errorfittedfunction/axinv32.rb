@@ -14,7 +14,7 @@ class Malge::ErrorFittedFunction::AXInv32 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = TODO")
+    sprintf("f(x) = %f / (x^{3/2})", * @coefficients)
   end
 
   def expected_error(x)

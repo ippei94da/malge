@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
-#Assumed y = a[0] * exp(a[1] *x)
+#Assumed y = a[0] * exp(a[1] * (x ^{3/2}))
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
@@ -18,7 +18,7 @@ class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = TODO")
+    sprintf("f(x) = %f \* exp(%f \* x^{3/2})", * @coefficients)
   end
 
   def expected_error(x)

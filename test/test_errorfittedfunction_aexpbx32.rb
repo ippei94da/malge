@@ -36,7 +36,7 @@ class TC_ErrorFittedFunction_AExpBX32 < Test::Unit::TestCase
   #end
 
   def test_equation
-    assert_equal("f(x) = 3.0 * exp( - 1.3862943611198906 * x)", @aebx00.equation)
+    assert_equal("f(x) = 3.000000 * exp(-1.386294 * x^{3/2})", @aebx00.equation)
   end
 
 

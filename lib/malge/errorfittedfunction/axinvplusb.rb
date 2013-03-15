@@ -13,7 +13,7 @@ class Malge::ErrorFittedFunction::AXInvPlusB < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = TODO")
+    sprintf("f(x) = %f + %f / x", * @coefficients)
   end
 
   def expected_error(x)
