@@ -5,6 +5,8 @@
 * Add Malge::ErrorFittedFunction::AXInv3
 * Malge::ErrorFittedFunction may raise UnableCalculationError if contain not finit value in coefficients after fitting.
 * Debug Malge::ErrorFittedFunction; to delete finest value.
+* rename Malge::ErrorFittedFunction#finest_y to Malge::ErrorFittedFunction#most_strict_y
+* Add Malge::ErrorFittedFunction#most_strict_y
 
 == Version 0.0.6)
 * Rename Malge::ErrorFittedFunction::AXInv to Malge::ErrorFittedFunction::AXInvPlusB

@@ -77,9 +77,9 @@ class TC_ErrorFittedFunction_AExpBX32 < Test::Unit::TestCase
 
   end
 
-  def test_finest_y
-    assert_equal(100.0, @aebx00.finest_y)
-    assert_equal(100.0, @aebx01.finest_y)
+  def test_most_strict_y
+    assert_equal(100.0, @aebx00.most_strict_y)
+    assert_equal(100.0, @aebx01.most_strict_y)
   end
 
   def test_variance

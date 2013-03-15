@@ -60,8 +60,8 @@ class TC_ErrorFittedFunction_AExpBX < Test::Unit::TestCase
     assert_in_delta(0.5, @aebx00.expected_error(3.0), TOLERANCE)
   end
 
-  def test_finest_y
-    assert_equal(100.0, @aebx00.finest_y)
+  def test_most_strict_y
+    assert_equal(100.0, @aebx00.most_strict_y)
   end
 
   def test_variance

@@ -26,11 +26,12 @@ class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
     @coefficients = [1.0, 2.0]
   end
 
-  def finest_y
-
+  def most_strict_x
+    TODO
+    @raw_pairs.max_by { |pair| pair[0] }[0]
     ##max
-    #finest_pair = @raw_pairs.max_by { |pair| pair[0] }
-    #finest_pair[1]
+    #most_strict_pair = @raw_pairs.max_by { |pair| pair[0] }
+    #most_strict_pair[1]
 
     ##@raw_pairs[x][1]
   end
@@ -57,10 +58,10 @@ class Malge::ErrorFittedFunction::Dummy02 < Malge::ErrorFittedFunction
     @coefficients = [0.0/0.0, 1.0]
   end
 
-  def finest_y
+  def most_strict_y
     #max
-    finest_pair = @raw_pairs.max_by { |pair| pair[0] }
-    finest_pair[1]
+    most_strict_pair = @raw_pairs.max_by { |pair| pair[0] }
+    most_strict_pair[1]
 
     #@raw_pairs[x][1]
   end
@@ -150,8 +151,8 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     }
   end
 
-  def test_finest_y
-    assert_equal(4.0, @eff01.finest_y)
+  def test_most_strict_y
+    assert_equal(4.0, @eff01.most_strict_y)
   end
 
 end

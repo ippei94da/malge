@@ -37,8 +37,8 @@ class TC_ErrorFittedFunction_AXInvPlusB < Test::Unit::TestCase
     assert_equal(1.5, @axi01.expected_error(8.0))
   end
 
-  def test_finest_y
-    assert_equal(3.0, @axi01.finest_y)
+  def test_most_strict_y
+    assert_equal(3.0, @axi01.most_strict_y)
   end
 
   def test_variance
