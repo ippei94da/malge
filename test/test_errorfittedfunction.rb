@@ -27,8 +27,9 @@ class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
   end
 
   def most_strict_x
-    TODO
-    @raw_pairs.max_by { |pair| pair[0] }[0]
+    return 2.0
+    #TODO
+    #@raw_pairs.max_by { |pair| pair[0] }[0]
     ##max
     #most_strict_pair = @raw_pairs.max_by { |pair| pair[0] }
     #most_strict_pair[1]
@@ -36,9 +37,9 @@ class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
     ##@raw_pairs[x][1]
   end
 
-  def most_strict_condition
-    return @raw_pairs.max_by {|pair| pair[1]}
-  end
+  #def most_strict_x
+  #  return @raw_pairs.max_by {|pair| pair[1]}
+  #end
 
 end
 
@@ -58,13 +59,13 @@ class Malge::ErrorFittedFunction::Dummy02 < Malge::ErrorFittedFunction
     @coefficients = [0.0/0.0, 1.0]
   end
 
-  def most_strict_y
-    #max
-    most_strict_pair = @raw_pairs.max_by { |pair| pair[0] }
-    most_strict_pair[1]
+  #def most_strict_y
+  #  #max
+  #  most_strict_pair = @raw_pairs.max_by { |pair| pair[0] }
+  #  most_strict_pair[1]
 
-    #@raw_pairs[x][1]
-  end
+  #  #@raw_pairs[x][1]
+  #end
 
 end
 
@@ -122,9 +123,12 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     TODO
   end
 
-  def test_most_strict_condition
-    TODO
-    assert_equal(2.0, @eff01.most_strict_condition)
+  def test_most_strict_x
+    assert_equal(2.0, @eff01.most_strict_x)
+  end
+
+  def test_most_strict_y
+    assert_equal(4.0, @eff01.most_strict_y)
   end
 
 

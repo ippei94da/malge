@@ -25,7 +25,7 @@ class Malge::ErrorFittedFunction
     end
 
     @raw_pairs = data_pairs
-    @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - finest_y).abs] }
+    @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - most_strict_y).abs] }
     #pp @diff_abs_pairs; exit
     @diff_abs_pairs.delete_at(-1)
     fit
@@ -67,12 +67,17 @@ class Malge::ErrorFittedFunction
   end
 
   #Return the value of y[i] at which the most precise data is expected to be obtained.
-  def finest_y
+  def most_strict_x
     raise NotImplementedError, "Define #{__method__}() in the inherited class."
 
     #In the most case, it would be sufficient to select belows.
-    @raw_pairs.max_by { |pair| pair[0] }[1]
-    @raw_pairs.min_by { |pair| pair[0] }[1]
+    @raw_pairs.max { |pair| pair[0] }[1]
+    @raw_pairs.min { |pair| pair[0] }[1]
+  end
+
+  #Return the value of y[i] at which the most precise data is expected to be obtained.
+  def most_strict_y
+    @raw_pairs[most_strict_x]
   end
 
   private
