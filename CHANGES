@@ -1,8 +1,11 @@
 = vasputils changelog
 
-== Master (for 0.0.8)
+== Master (for 0.0.9)
 
-== Version 0.0.7)
+== Version 0.0.8
+* Small revision.
+
+== Version 0.0.7
 * Add Malge::ErrorFittedFunction::AXInv2
 * Add Malge::ErrorFittedFunction::AXInv3
 * Malge::ErrorFittedFunction may raise UnableCalculationError if contain not finit value in coefficients after fitting.
