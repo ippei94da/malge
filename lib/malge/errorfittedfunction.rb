@@ -25,9 +25,7 @@ class Malge::ErrorFittedFunction
     end
 
     @raw_pairs = data_pairs
-    @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - most_strict_y).abs] }
-    #pp @diff_abs_pairs; exit
-    @diff_abs_pairs.delete_at(-1)
+    @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - most_strict_pair[1]).abs] }
     fit
 
     @coefficients.each do |coef|
@@ -53,9 +51,7 @@ class Malge::ErrorFittedFunction
   #Ignore last value of x[i] and y[i].
   def variance
     sum = 0.0
-    #pp @diff_abs_pairs
     @diff_abs_pairs.each do |pair|
-      #pp pair
       sum += (pair[1] - expected_error(pair[0]) )**2
     end
     sum
@@ -67,17 +63,12 @@ class Malge::ErrorFittedFunction
   end
 
   #Return the value of y[i] at which the most precise data is expected to be obtained.
-  def most_strict_x
+  def most_strict_pair
     raise NotImplementedError, "Define #{__method__}() in the inherited class."
 
     #In the most case, it would be sufficient to select belows.
-    @raw_pairs.max { |pair| pair[0] }[1]
-    @raw_pairs.min { |pair| pair[0] }[1]
-  end
-
-  #Return the value of y[i] at which the most precise data is expected to be obtained.
-  def most_strict_y
-    @raw_pairs[most_strict_x]
+    @raw_pairs.max_by{ |pair| pair[0] }
+    @raw_pairs.mix_by{ |pair| pair[0] }
   end
 
   private

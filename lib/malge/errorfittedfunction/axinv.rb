@@ -6,7 +6,9 @@
 class Malge::ErrorFittedFunction::AXInv < Malge::ErrorFittedFunction
 
   def fit
-    inv_pairs =  @diff_abs_pairs.map {|pair| [1.0/pair[0], pair[1]]}
+    inv_pairs = Marshal.load(Marshal.dump(@diff_abs_pairs))
+    #inv_pairs.delete([most_strict_x, 0.0])
+    inv_pairs.map! {|pair| [1.0/pair[0], pair[1]]}
     @coefficients = Malge::LeastSquare.least_square_proportional(inv_pairs)
   end
 
@@ -24,9 +26,10 @@ class Malge::ErrorFittedFunction::AXInv < Malge::ErrorFittedFunction
     return @coefficients[0] / y
   end
 
-  def finest_y
-    @raw_pairs.max_by { |pair| pair[0] }[1]
+  def most_strict_pair
+    @raw_pairs.max_by{ |pair| pair[0] }
   end
+
 
 end
 

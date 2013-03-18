@@ -11,6 +11,8 @@ class Malge::ErrorFittedFunction::Dummy00 < Malge::ErrorFittedFunction
 end
 
 class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
+  $tolerance = 1E-10
+
   def expected_error(x)
     @coefficients[0] + @coefficients[1] * x
   end
@@ -26,23 +28,13 @@ class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
     @coefficients = [1.0, 2.0]
   end
 
-  def most_strict_x
-    return 2.0
-    #TODO
-    #@raw_pairs.max_by { |pair| pair[0] }[0]
-    ##max
-    #most_strict_pair = @raw_pairs.max_by { |pair| pair[0] }
-    #most_strict_pair[1]
-
-    ##@raw_pairs[x][1]
+  def most_strict_pair
+    @raw_pairs.max_by{ |pair| pair[0] }
   end
-
-  #def most_strict_x
-  #  return @raw_pairs.max_by {|pair| pair[1]}
-  #end
 
 end
 
+## Dummy class to check Exception due to NaN.
 class Malge::ErrorFittedFunction::Dummy02 < Malge::ErrorFittedFunction
   def expected_error(x)
     @coefficients[0] + @coefficients[1] * x
@@ -59,37 +51,38 @@ class Malge::ErrorFittedFunction::Dummy02 < Malge::ErrorFittedFunction
     @coefficients = [0.0/0.0, 1.0]
   end
 
-  #def most_strict_y
-  #  #max
-  #  most_strict_pair = @raw_pairs.max_by { |pair| pair[0] }
-  #  most_strict_pair[1]
-
-  #  #@raw_pairs[x][1]
-  #end
-
+  def most_strict_pair
+    @raw_pairs.max_by { |pair| pair[0] }
+  end
 end
 
 
 class TC_ErrorFittedFunction < Test::Unit::TestCase
   def setup
     @eff01 = Malge::ErrorFittedFunction::Dummy01.new(
-      #2x+1 = 1, -1 
-      #2x+1 = 3, +2 
-      #2x+1 = 5, -1 
-      #[0.0, 1.0, 2.0],
-      #[0.0, 5.0, 4.0]
       [
         [0.0, 0.0],
         [1.0, 5.0],
         [2.0, 4.0],
       ]
     )
+
+    # not ordered.
+    data = [
+      [1000.0, -3.153327],
+      [1200.0, -3.150316],
+      [1500.0, -3.151397],
+      [ 500.0, -3.11294],
+      [ 600.0, -3.181593],
+      [ 700.0, -3.165176],
+      [ 900.0, -3.152733],
+      [ 500.0, -3.11294]
+    ]
+    @eff02 = Malge::ErrorFittedFunction::Dummy01.new(data)
   end
 
   def test_variance
-    assert_equal(13.0, @eff01.variance)
-    #diff_abs = [4,1]
-    #expected = [1,3]
+    assert_equal(38.0, @eff01.variance)
   end
 
   def test_expected_error
@@ -105,30 +98,32 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
   end
 
   def test_initialize_diff_abs_pairs
-    # not ordered.
-    data = [
-      [1000.0, -3.153327],
-      [1200.0, -3.150316],
-      [1500.0, -3.151397],
-      [ 500.0, -3.11294],
-      [ 600.0, -3.181593],
-      [ 700.0, -3.165176],
-      [ 900.0, -3.152733],
-      [ 500.0, -3.11294]
-    ]
-    aebx02 = Malge::ErrorFittedFunction::Dummy02.new(data)
-    pp aebx02.diff_abs_pairs
-    assert_equal
 
-    TODO
+    assert_equal(1000.0, @eff02.diff_abs_pairs[0][0])
+    assert_equal(1200.0, @eff02.diff_abs_pairs[1][0])
+    assert_equal(1500.0, @eff02.diff_abs_pairs[2][0])
+    assert_equal( 500.0, @eff02.diff_abs_pairs[3][0])
+    assert_equal( 600.0, @eff02.diff_abs_pairs[4][0])
+    assert_equal( 700.0, @eff02.diff_abs_pairs[5][0])
+    assert_equal( 900.0, @eff02.diff_abs_pairs[6][0])
+    assert_equal( 500.0, @eff02.diff_abs_pairs[7][0])
+
+    assert_in_delta(0.001930, @eff02.diff_abs_pairs[0][1], $tolerance)
+    assert_in_delta(0.001081, @eff02.diff_abs_pairs[1][1], $tolerance)
+    assert_in_delta(0.0     , @eff02.diff_abs_pairs[2][1], $tolerance)
+    assert_in_delta(0.038457, @eff02.diff_abs_pairs[3][1], $tolerance)
+    assert_in_delta(0.030196, @eff02.diff_abs_pairs[4][1], $tolerance)
+    assert_in_delta(0.013779, @eff02.diff_abs_pairs[5][1], $tolerance)
+    assert_in_delta(0.001336, @eff02.diff_abs_pairs[6][1], $tolerance)
+    assert_in_delta(0.038457, @eff02.diff_abs_pairs[7][1], $tolerance)
   end
 
-  def test_most_strict_x
-    assert_equal(2.0, @eff01.most_strict_x)
-  end
+  def test_most_strict_pair
+    assert_equal(2.0, @eff01.most_strict_pair[0])
+    assert_equal(4.0, @eff01.most_strict_pair[1])
 
-  def test_most_strict_y
-    assert_equal(4.0, @eff01.most_strict_y)
+    assert_equal(1500.0   , @eff02.most_strict_pair[0])
+    assert_equal(-3.151397, @eff02.most_strict_pair[1])
   end
 
 
@@ -153,10 +148,6 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     assert_raise(Malge::ErrorFittedFunction::UnableCalculationError){
       Malge::ErrorFittedFunction::Dummy02.new([[1,2]])
     }
-  end
-
-  def test_most_strict_y
-    assert_equal(4.0, @eff01.most_strict_y)
   end
 
 end

@@ -26,7 +26,6 @@ class Malge::SimultaneousEquations
     n = matrix.column_size
     n.times do |i|
       tmp = Marshal.load( Marshal.dump( matrix ) )
-      #pp tmp
       n.times do |j|
         tmp[ j, i ] = values[ j ]
       end

@@ -17,7 +17,6 @@ module Malge::LeastSquare
   #  ]
   #Note that not [a, b] in y = ax + b.
   def self.least_square_1st_degree(data_pairs)
-    #pp data_pairs
     a = 0.0 #x^2
     #b = 0.0 #y^2
     c = 0.0 #x^1
@@ -42,15 +41,12 @@ module Malge::LeastSquare
     a = 0.0 #x^2
     d = 0.0 #x*y
     n = data_pairs.size
-    #pp data_pairs
     data_pairs.each do |pairs|
       x = pairs[0].to_f
       y = pairs[1].to_f
       a += x**2
-      #b += y**2
       d += x*y
     end
-    #raise  if d == 0.0
     [d/a]
   end
 
@@ -64,8 +60,6 @@ module Malge::LeastSquare
   def self.variance_1st_degree(data_pairs)
     coefficients = self.least_square_1st_degree(data_pairs)
     data_pairs.inject(0.0) do |sum, pair|
-      #pp pair
-      #pp sum
       x = pair[0]
       y = pair[1]
       f_x = coefficients[0] + coefficients[1] * x

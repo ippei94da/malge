@@ -7,6 +7,7 @@
 * Debug Malge::ErrorFittedFunction; to delete finest value.
 * rename Malge::ErrorFittedFunction#finest_y to Malge::ErrorFittedFunction#most_strict_y
 * Add Malge::ErrorFittedFunction#most_strict_y
+* Change behavior of Malge::ErrorFittedFunction when generated; To keep the most precise value pair.
 
 == Version 0.0.6)
 * Rename Malge::ErrorFittedFunction::AXInv to Malge::ErrorFittedFunction::AXInvPlusB

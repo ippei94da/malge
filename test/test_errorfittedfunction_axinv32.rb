@@ -7,66 +7,42 @@ require "helper"
 ##require "malge/errorfittedfunction.rb"
 
 class TC_ErrorFittedFunction_AXInv32 < Test::Unit::TestCase
-  TOLERANCE = 1.0E-10
+  $tolerance = 1E-10
 
   def setup
-    @axi00 = Malge::ErrorFittedFunction::AXInv32.new(
+    @axi3200 = Malge::ErrorFittedFunction::AXInv32.new(
       [
-        [ 1, 164.0],
-        [ 4, 108.0],
-        [16, 101.0],
-        [64, 100.0],
+        [1.0, 1.0],
+        [2.0, 3.0],
       ]
     )
-
-    @axi01 = Malge::ErrorFittedFunction::AXInv32.new(
-      [
-        [ 1, 164.0],
-        [ 4,  92.0],
-        [16, 101.0],
-        [64, 100.0],
-      ]
-    )
-
   end
 
-  #def test_initialize
-  #end
-
   def test_equation
-    assert_equal("f(x) = 64.000000 / (x^{3/2})", @axi00.equation)
+    assert_equal("f(x) = 1.777778 / (x^{3/2})", @axi3200.equation)
   end
 
   def test_fit
-    corrects = [64.0]
-    results = @axi00.coefficients
-    assert_equal(1, results.size)
-    assert_in_delta(corrects[0], results[0], TOLERANCE)
+    assert_in_delta(16.0/9.0, @axi3200.coefficients[0], $tolerance)
   end
 
   def test_expected_error
-    assert_equal(64.0, @axi00.expected_error(1.0))
-    assert_equal( 8.0, @axi00.expected_error(4.0))
-    assert_equal( 1.0, @axi00.expected_error(16.0))
+    assert_in_delta(16.0/9.0, @axi3200.expected_error(1.0), $tolerance)
+    assert_in_delta(16.0/9.0 * 2.0**(-3.0/2.0), @axi3200.expected_error(2.0), $tolerance)
 
-    assert_equal(64.0, @axi01.expected_error(1.0))
-    assert_equal( 8.0, @axi01.expected_error(4.0))
-    assert_equal( 1.0, @axi01.expected_error(16.0))
   end
 
-  def test_most_strict_y
-    assert_equal(100.0, @axi00.most_strict_y)
-    assert_equal(100.0, @axi01.most_strict_y)
+  def test_most_strict_pair
+    assert_in_delta(  2.0, @axi3200.most_strict_pair[0])
+    assert_in_delta(  3.0, @axi3200.most_strict_pair[1])
   end
 
   def test_variance
-    assert_equal( 0.0, @axi00.variance)
-    assert_equal( 0.0, @axi01.variance)
+    assert_equal(36.0/81.0, @axi3200.variance)
   end
 
   def test_x
-    assert_in_delta(16.0, @axi00.x(1.0), TOLERANCE)
+    assert_in_delta(1.0, @axi3200.x(16.0/9.0), $tolerance)
   end
-
 end
 

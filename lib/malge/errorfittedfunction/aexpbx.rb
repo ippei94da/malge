@@ -5,6 +5,9 @@
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
+#
+#NOTE: Zero value for |y - y_last| is simply ignored due to impossible log evaluation.
+# 
 class Malge::ErrorFittedFunction::AExpBX < Malge::ErrorFittedFunction
 
   def fit
@@ -13,6 +16,7 @@ class Malge::ErrorFittedFunction::AExpBX < Malge::ErrorFittedFunction
       y = Math::log(pair[1])
       [x,y]
     }
+    inv_pairs.delete_if {|pair| ! pair[1].finite?} 
     @coefficients = Malge::LeastSquare.least_square_1st_degree(inv_pairs)
     @coefficients[0] = Math::exp @coefficients[0]
   end
@@ -34,8 +38,8 @@ class Malge::ErrorFittedFunction::AExpBX < Malge::ErrorFittedFunction
     return Math::log( y / @coefficients[0])/@coefficients[1]
   end
 
-  def finest_y
-    @raw_pairs.max_by { |pair| pair[0] }[1]
+  def most_strict_pair
+    @raw_pairs.max_by{ |pair| pair[0] }
   end
 
 end

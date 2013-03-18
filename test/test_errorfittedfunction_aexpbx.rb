@@ -11,7 +11,9 @@ class Malge::ErrorFittedFunction::AExpBX
 end
 
 class TC_ErrorFittedFunction_AExpBX < Test::Unit::TestCase
+
   TOLERANCE = 1.0E-10
+
   def setup
     @aebx00 = Malge::ErrorFittedFunction::AExpBX.new(
       [
@@ -60,12 +62,13 @@ class TC_ErrorFittedFunction_AExpBX < Test::Unit::TestCase
     assert_in_delta(0.5, @aebx00.expected_error(3.0), TOLERANCE)
   end
 
-  def test_most_strict_y
-    assert_equal(100.0, @aebx00.most_strict_y)
+  def test_most_strict
+    assert_in_delta(  3.0, @aebx00.most_strict_pair[0])
+    assert_in_delta(100.0, @aebx00.most_strict_pair[1])
   end
 
   def test_variance
-    assert_in_delta( 0.0, @aebx00.variance, TOLERANCE)
+    assert_in_delta( 0.25, @aebx00.variance, TOLERANCE)
     #diff_abs = [4,1]
     #expected = [1,3]
   end

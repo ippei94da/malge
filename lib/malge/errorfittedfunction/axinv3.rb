@@ -24,9 +24,10 @@ class Malge::ErrorFittedFunction::AXInv3 < Malge::ErrorFittedFunction
     return (@coefficients[0] / y) ** (1.0/3.0)
   end
 
-  def finest_y
-    @raw_pairs.max_by { |pair| pair[0] }[1]
+  def most_strict_pair
+    @raw_pairs.max_by{ |pair| pair[0] }
   end
+
 
 end
 

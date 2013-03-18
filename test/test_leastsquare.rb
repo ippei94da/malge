@@ -66,6 +66,16 @@ class TC_Malge < Test::Unit::TestCase
     results = Malge::LeastSquare.least_square_proportional(data_pairs)
     assert_equal(1, results.size)
     assert_in_delta(-1.5, results[0], TOLERANCE)
+
+    data_pairs =
+    [
+      [  1.000,  0.000],
+      [  2.000,  2.000],
+    ]
+    results = Malge::LeastSquare.least_square_proportional(data_pairs)
+    assert_equal(1, results.size)
+    assert_in_delta(0.8, results[0], TOLERANCE)
+
   end
 
 

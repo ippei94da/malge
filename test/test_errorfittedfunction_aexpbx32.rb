@@ -57,7 +57,7 @@ class TC_ErrorFittedFunction_AExpBX32 < Test::Unit::TestCase
   def test_expected_error
     corrects =
       [
-        3.0* 2.0**(-2.0 * 0.0)    ,
+        3.0* 2.0**(-2.0 * 0.0),
         3.0* 2.0**(-2.0 * 1.0),
         3.0* 2.0**(-2.0 * (2.0**(3.0/2.0)))
       ]
@@ -67,7 +67,7 @@ class TC_ErrorFittedFunction_AExpBX32 < Test::Unit::TestCase
 
     corrects =
       [
-        3.0* 2.0**(-2.0 * 0.0)    ,
+        3.0* 2.0**(-2.0 * 0.0),
         3.0* 2.0**(-2.0 * 1.0),
         3.0* 2.0**(-2.0 * (2.0**(3.0/2.0)))
       ]
@@ -77,14 +77,15 @@ class TC_ErrorFittedFunction_AExpBX32 < Test::Unit::TestCase
 
   end
 
-  def test_most_strict_y
-    assert_equal(100.0, @aebx00.most_strict_y)
-    assert_equal(100.0, @aebx01.most_strict_y)
+  def test_most_strict_pair
+    assert_in_delta(  3.0, @aebx00.most_strict_pair[0])
+    assert_in_delta(100.0, @aebx00.most_strict_pair[1])
   end
 
   def test_variance
-    assert_in_delta( 0.0, @aebx00.variance, TOLERANCE)
-    assert_in_delta( 0.0, @aebx01.variance, TOLERANCE)
+    correct = ( 3.0* 2.0**(-2.0 * (3.0**(3.0/2.0))))**2.0
+    assert_in_delta(correct, @aebx00.variance, TOLERANCE)
+    assert_in_delta(correct, @aebx01.variance, TOLERANCE)
   end
 
   def test_x
