@@ -1,0 +1,21 @@
+#! /usr/bin/env ruby
+# coding: utf-8
+
+require "optparse"
+
+## option analysis
+OPTIONS = {}
+op = OptionParser.new
+op.banner = [
+    "Usage: #{File.basename("#{__FILE__}")}",
+].join("\n")
+op.on("--aexpbx"  , "Assume y = a[0] * exp(a[1] *x)         "){OPTIONS[:aexpbx  ] = true}
+op.on("--aexpbx32", "Assume y = a[0] * exp(a[1] * (x^{3/2}))"){OPTIONS[:aexpbx32] = true}
+op.on("--axinv"   , "Assume y = a[0]/x                      "){OPTIONS[:axinv   ] = true}
+op.on("--axinv2"  , "Assume y = a[0] /(x^2)                 "){OPTIONS[:axinv2  ] = true}
+op.on("--axinv3"  , "Assume y = a[0]/(x^3)                  "){OPTIONS[:axinv3  ] = true}
+op.on("--axinv32" , "Assume y = a[0] /x^{3/2}               "){OPTIONS[:axinv32 ] = true}
+
+
+op.parse!(ARGV)
+

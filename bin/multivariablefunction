@@ -1,0 +1,48 @@
+#! /usr/bin/env ruby
+# coding: utf-8
+
+require "optparse"
+require 'csv'
+require 'pp'
+
+## option analysis
+OPTIONS = {}
+op = OptionParser.new
+op.banner = [
+    "Usage: #{File.basename("#{__FILE__}")} file",
+    "Argumented 'file' must have csv format and item names in the first line."
+].join("\n")
+#op.on("-a"    , "--aho"    , "descriptionA"){    OPTIONS[:aho] = true}
+op.on("-f values", "--fix=values", "Print matching conditions."){ |v|
+    conds = v.split(",")
+    OPTIONS[:fix] = {}
+    conds.each do |cond|
+        key, val = cond.split("=")
+        OPTIONS[:fix][key.to_sym] = val.to_f
+    end
+}
+op.on("-s values", "--show=values", "Show values with order."){ |v|
+    OPTIONS[:show] = v.split(",").map{|v| v.to_sym}
+}
+op.parse!(ARGV)
+
+#pp OPTIONS
+#pp ARGV
+#data = CSV.read ARGV[0]
+data = CSV.table ARGV[0]
+#pp data[2]
+#pp data[:toten]
+#pp data[:kab]
+
+def match?(row)
+    result = true
+    OPTIONS[:fix].each do |key, val|
+        return false if row[key] != val
+    end
+end
+
+data.each do |line|
+    next unless match?(line)
+    puts OPTIONS[:show].map { |item| line[item] } .join(",")
+end
+
