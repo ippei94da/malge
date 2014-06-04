@@ -1,6 +1,8 @@
 = malge changelog
 
 == Master (for 0.0.9)
+* Add bin/analyzeerror
+* Add bin/multivariablefunction
 
 == Version 0.0.8 [2013-03-18] released
 * Small revision.

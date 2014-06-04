@@ -2,20 +2,68 @@
 # coding: utf-8
 
 require "optparse"
+require "malge"
+require "csv"
+require "pp"
 
 ## option analysis
 OPTIONS = {}
+OPTIONS[:analyzer] = []
 op = OptionParser.new
 op.banner = [
     "Usage: #{File.basename("#{__FILE__}")}",
 ].join("\n")
-op.on("--aexpbx"  , "Assume y = a[0] * exp(a[1] *x)         "){OPTIONS[:aexpbx  ] = true}
-op.on("--aexpbx32", "Assume y = a[0] * exp(a[1] * (x^{3/2}))"){OPTIONS[:aexpbx32] = true}
-op.on("--axinv"   , "Assume y = a[0]/x                      "){OPTIONS[:axinv   ] = true}
-op.on("--axinv2"  , "Assume y = a[0] /(x^2)                 "){OPTIONS[:axinv2  ] = true}
-op.on("--axinv3"  , "Assume y = a[0]/(x^3)                  "){OPTIONS[:axinv3  ] = true}
-op.on("--axinv32" , "Assume y = a[0] /x^{3/2}               "){OPTIONS[:axinv32 ] = true}
-
-
+op.on("--aexpbx"  , "Assume y = a[0] * exp(a[1] *x)         "){
+    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AExpBX
+}
+op.on("--aexpbx32", "Assume y = a[0] * exp(a[1] * (x^{3/2}))"){
+    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AExpBX32
+}
+op.on("--axinv"   , "Assume y = a[0]/x                      "){
+    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv
+}
+op.on("--axinv2"  , "Assume y = a[0] /(x^2)                 "){
+    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv2
+}
+op.on("--axinv3"  , "Assume y = a[0]/(x^3)                  "){
+    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv3
+}
+op.on("--axinv32" , "Assume y = a[0] /x^{3/2}               "){
+    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv32
+}
 op.parse!(ARGV)
 
+if OPTIONS[:analyzer].empty?
+    puts "No assumed function type."
+    exit
+end
+
+data = CSV.table ARGV[0]
+data = data.to_a
+headers = []
+unless data[0][0].is_a? Numeric
+    headers = data[0]
+    data.delete_at(0)
+end
+
+OPTIONS[:analyzer].each do |analyzer|
+    function = analyzer.new(data)
+
+    #puts headers.join(",")
+    puts "Fitted function: #{function.equation}"
+    puts "Variance: #{function.variance}"
+    printf("%14s %14s %14s %14s\n", "x", "y", "|diff_last|", "expected_error")
+    data.sort_by{|v| v[0]}.each do |x,y|
+        printf("%14.6f %14.6f %14.6f %14.6f\n",
+               x,
+               y,
+               (y - function.most_strict_pair[1]).abs,
+               function.expected_error(x),
+              )
+    end
+    puts
+end
+
+
+
+#pp data

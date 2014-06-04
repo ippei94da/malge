@@ -6,43 +6,94 @@ require 'csv'
 require 'pp'
 
 ## option analysis
+options = ARGV.dup
 OPTIONS = {}
+OPTIONS[:show] = []
+OPTIONS[:fix] = {}
 op = OptionParser.new
 op.banner = [
-    "Usage: #{File.basename("#{__FILE__}")} file",
+    "Usage: #{File.basename("#{__FILE__}")} file --show='item1,item2'",
     "Argumented 'file' must have csv format and item names in the first line."
 ].join("\n")
 #op.on("-a"    , "--aho"    , "descriptionA"){    OPTIONS[:aho] = true}
 op.on("-f values", "--fix=values", "Print matching conditions."){ |v|
     conds = v.split(",")
-    OPTIONS[:fix] = {}
     conds.each do |cond|
         key, val = cond.split("=")
-        OPTIONS[:fix][key.to_sym] = val.to_f
+        OPTIONS[:fix][key.downcase.to_sym] = val.to_f
     end
 }
 op.on("-s values", "--show=values", "Show values with order."){ |v|
-    OPTIONS[:show] = v.split(",").map{|v| v.to_sym}
+    OPTIONS[:show] = v.split(",")
+}
+op.on("-d key,value",
+      "--difference=key,value",
+      "Difference between value of key."){ |v|
+    OPTIONS[:difference] = v
+}
+op.on("-a key",
+      "--absolute-value=key",
+      "Absolute value of key."){ |v|
+    OPTIONS[:absolute_value] = v
 }
 op.parse!(ARGV)
 
-#pp OPTIONS
-#pp ARGV
-#data = CSV.read ARGV[0]
+if ARGV.empty?
+    puts "No csv file."
+    puts op.banner
+    exit
+end
+
+unless FileTest.exist?(ARGV[0])
+    puts "File not found: #{ARGV[0]}"
+    puts op.banner
+    exit
+end
+
+if OPTIONS[:show].empty?
+    puts "No --show option found."
+    puts op.banner
+    exit
+end
+
+#Read data
 data = CSV.table ARGV[0]
-#pp data[2]
-#pp data[:toten]
-#pp data[:kab]
-
-def match?(row)
-    result = true
+data.delete_if do |row|
+    result = false
     OPTIONS[:fix].each do |key, val|
-        return false if row[key] != val
+        result = true if row[key] != val
     end
+    result
 end
 
-data.each do |line|
-    next unless match?(line)
-    puts OPTIONS[:show].map { |item| line[item] } .join(",")
+# Delete columns of fixed variable.
+OPTIONS[:fix].keys.each { |key| data.delete(key) }
+
+# Reorder of :show option
+tmp = []
+data.each do |row|
+    items = []
+    OPTIONS[:show].each do |item|
+        key = item.downcase.to_sym
+        items << row[key]
+    end
+    row = CSV::Row.new(OPTIONS[:show], items)
+    tmp << row
 end
+data = CSV::Table.new(tmp)
+
+# Difference
+if OPTIONS[:difference]
+    key, value = OPTIONS[:difference].split(",")
+    data[key] = data[key].map{|v| v - value.to_f}
+end
+
+# Absolute value
+if OPTIONS[:absolute_value]
+    key = OPTIONS[:absolute_value]
+    data[key] = data[key].map{|v| v.abs}
+end
+# Print
+#pp data
+puts data.to_csv
 
