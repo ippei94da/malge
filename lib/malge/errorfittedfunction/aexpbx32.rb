@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
-#Assumed y = a[0] * exp(a[1] * (x ^{3/2}))
+#Assumed y = a[0] * exp(a[1] * (x **{3/2}))
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
@@ -19,19 +19,19 @@ class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = %f \* exp(%f \* x^{3/2})", * @coefficients)
+    sprintf("f(x) = %f \* exp(%f \* x**(3/2))", * @coefficients)
   end
 
   def expected_error(x)
     @coefficients[0] * Math::exp( @coefficients[1] * x **(3.0/2.0))
   end
 
-  #y = a[0] * exp(a[1] *x^(3/2))
-  #a[0] * exp(a[1] *x^(3/2)) = y
-  #exp(a[1] *x^(3/2)) = y/a[0]
-  #a[1] *x^(3/2) = log( y/a[0])
-  #x^(3/2) = log( y/a[0])/a[1]
-  #x = (log( y/a[0])/a[1])^(2/3)
+  #y = a[0] * exp(a[1] *x**(3/2))
+  #a[0] * exp(a[1] *x**(3/2)) = y
+  #exp(a[1] *x**(3/2)) = y/a[0]
+  #a[1] *x**(3/2) = log( y/a[0])
+  #x**(3/2) = log( y/a[0])/a[1]
+  #x = (log( y/a[0])/a[1])**(2/3)
   def x(y)
     return (Math::log( y / @coefficients[0])/@coefficients[1]) **(2.0/3.0)
   end

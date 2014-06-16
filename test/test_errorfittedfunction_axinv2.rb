@@ -19,7 +19,7 @@ class TC_ErrorFittedFunction_AXInv2 < Test::Unit::TestCase
   end
 
   def test_equation
-    assert_equal("f(x) = 0.800000 / (x^2)", @axi200.equation)
+    assert_equal("f(x) = 0.800000 / (x**2)", @axi200.equation)
   end
 
   def test_fit

@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
-#Assumed y = a[0] /x^{3/2}
+#Assumed y = a[0] /x**{3/2}
 #
 #NOTE: @coefficients[0] might become negative value.
 # Need discussion for dealing?
@@ -13,18 +13,18 @@ class Malge::ErrorFittedFunction::AXInv32 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = %f / (x^{3/2})", * @coefficients)
+    sprintf("f(x) = %f / (x**(3/2))", * @coefficients)
   end
 
   def expected_error(x)
     @coefficients[0] /(x** (3.0/2.0))
   end
 
-  #        y = a[0]/x^{3/2}
-  #        y = a[0]/x^{3/2}
-  #x^{3/2} y = a[0]
-  #  x^{3/2} = a[0]/y
-  #        x = (a[0]/y)^{2/3}
+  #        y = a[0]/x**{3/2}
+  #        y = a[0]/x**{3/2}
+  #x**{3/2} y = a[0]
+  #  x**{3/2} = a[0]/y
+  #        x = (a[0]/y)**{2/3}
   def x(y)
     return (@coefficients[0] / y ) ** (2.0/3.0)
   end

@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
-#Assumed y = a[0]/(x^3)
+#Assumed y = a[0]/(x**3)
 #
 class Malge::ErrorFittedFunction::AXInv3 < Malge::ErrorFittedFunction
 
@@ -11,7 +11,7 @@ class Malge::ErrorFittedFunction::AXInv3 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = %f / (x^3)", * @coefficients)
+    sprintf("f(x) = %f / (x**3)", * @coefficients)
   end
 
   def expected_error(x)
