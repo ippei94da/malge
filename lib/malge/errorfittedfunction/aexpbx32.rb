@@ -19,7 +19,7 @@ class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = %f \* exp(%f \* x**(3/2))", * @coefficients)
+    sprintf("%f \* exp(%f \* x**(3/2))", * @coefficients)
   end
 
   def expected_error(x)

@@ -3,7 +3,6 @@
 
 require "optparse"
 require "malge"
-require "csv"
 require "pp"
 
 ## option analysis
@@ -31,6 +30,9 @@ op.on("--axinv3"  , "Assume y = a[0]/(x^3)                  "){
 op.on("--axinv32" , "Assume y = a[0] /x^(3/2)               "){
     OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv32
 }
+op.on("-f", "--show-function" , "Show function"){
+    OPTIONS[:function] = true
+}
 op.on("-v", "--show-variance" , "Show variance"){
     OPTIONS[:variance] = true
 }
@@ -44,31 +46,58 @@ if OPTIONS[:analyzer].empty?
     exit
 end
 
-data = CSV.table ARGV[0]
-data = data.to_a
-headers = []
-unless data[0][0].is_a? Numeric
-    headers = data[0]
-    data.delete_at(0)
+data = File.readlines(ARGV[0]).map{|line| line.strip.split(" ")}
+keys = data.shift
+data.each do |datum|
+    datum.map! {|datum| datum.to_f}
 end
 
-OPTIONS[:analyzer].each do |analyzer|
-    function = analyzer.new(data)
+#pp keys; exit
+#pp data; exit
 
-    #puts headers.join(",")
-    puts "Fitted function: #{function.equation}"
-    puts "Variance: #{function.variance}" if OPTIONS[:variance]
+if OPTIONS[:function] || OPTIONS[:variance] 
+    OPTIONS[:analyzer].size.times do |i|
+        analyzer = OPTIONS[:analyzer][i]
+        function = analyzer.new(data)
 
-    if OPTIONS[:table]
-        printf("%14s %14s %14s %14s\n", "x", "y", "|diff_last|", "expected_error")
-        data.sort_by{|v| v[0]}.each do |x,y|
-            printf("%14.6f %14.6f %14.6f %14.6f\n",
-                   x,
-                   y,
-                   (y - function.most_strict_pair[1]).abs,
-                   function.expected_error(x),
-                  )
+        results = []
+        results << sprintf("f#{i}(x) = %-40s", function.equation) if OPTIONS[:function]
+        results << sprintf("Variance#{i} = %15.6f", function.variance) if OPTIONS[:variance]
+        puts results.join(', ')
+    end
+end
+
+if OPTIONS[:table]
+    results = Marshal.load(Marshal.dump(data))
+    results = results.sort_by{|v| v[0]}
+
+    ## |diff|
+    last_y = results[-1][1]
+    results.map! do |values| 
+        values << (values[1] - last_y).abs
+    end
+
+    ## Calculate values
+    OPTIONS[:analyzer].size.times do |i|
+        analyzer = OPTIONS[:analyzer][i]
+        function = analyzer.new(data)
+
+        results.each do |items|
+            x = items[0]
+            items << function.expected_error(x)
         end
     end
-    puts
+
+    ## Print keys
+    keys = ["x", "y", "|d_last|"]
+    OPTIONS[:analyzer].size.times do |i|
+        keys << "f#{i}"
+    end
+    puts keys.map{|v| sprintf("%9s", v)}.join(" ")
+
+
+    ## Print values
+    results.each do |items|
+        puts items.map{|v| sprintf("%9.5f", v)}.join(" ")
+    end
 end

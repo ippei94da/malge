@@ -11,7 +11,7 @@ class Malge::ErrorFittedFunction::AXInv2 < Malge::ErrorFittedFunction
   end
 
   def equation
-    sprintf("f(x) = %f / (x**2)", * @coefficients)
+    sprintf("%f / (x**2)", * @coefficients)
   end
 
   def expected_error(x)
