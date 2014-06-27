@@ -27,6 +27,9 @@ op.on("--axinv2"  , "Assume y = a[0] /(x^2)                 "){
 op.on("--axinv3"  , "Assume y = a[0]/(x^3)                  "){
     OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv3
 }
+op.on("--axinv4"  , "Assume y = a[0]/(x^4)                  "){
+    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv4
+}
 op.on("--axinv32" , "Assume y = a[0] /x^(3/2)               "){
     OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv32
 }
