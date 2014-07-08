@@ -42,6 +42,9 @@ op.on("-v", "--show-variance" , "Show variance"){
 op.on("-t", "--show-table" , "Show table"){
     OPTIONS[:table] = true
 }
+op.on("-o", "--show-over-under" , "Show over and under"){
+    OPTIONS[:over] = true
+}
 op.parse!(ARGV)
 
 if OPTIONS[:analyzer].empty?
@@ -67,6 +70,21 @@ if OPTIONS[:function] || OPTIONS[:variance]
         results << sprintf("f#{i}(x) = %-40s", function.equation) if OPTIONS[:function]
         results << sprintf("Variance#{i} = %15.6f", function.variance) if OPTIONS[:variance]
         puts results.join(', ')
+    end
+end
+
+if OPTIONS[:over]
+    OPTIONS[:analyzer].size.times do |i|
+        analyzer = OPTIONS[:analyzer][i]
+        function = analyzer.new(data)
+        comparisons = [0,0,0]
+        data.each do |x,y|
+            last_y = function.most_strict_pair[1]
+            pp function.expected_error(x), (y - last_y).abs
+            puts
+            comparisons[function.expected_error(x) <=> (y - last_y).abs] += 1
+        end
+        pp comparisons
     end
 end
 
