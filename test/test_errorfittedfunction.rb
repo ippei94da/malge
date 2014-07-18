@@ -82,7 +82,10 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     end
 
     def test_variance
-        assert_equal(38.0, @eff01.variance)
+        # diff_abs_pairs = [[0.0, 4.0], [1.0, 1.0]
+        # function       = 2x + 1
+        # Then, 3 **2 + 2**2 = 13
+        assert_equal(13.0, @eff01.variance)
     end
 
     def test_expected_error
@@ -101,21 +104,21 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
 
         assert_equal(1000.0, @eff02.diff_abs_pairs[0][0])
         assert_equal(1200.0, @eff02.diff_abs_pairs[1][0])
-        assert_equal(1500.0, @eff02.diff_abs_pairs[2][0])
-        assert_equal( 500.0, @eff02.diff_abs_pairs[3][0])
-        assert_equal( 600.0, @eff02.diff_abs_pairs[4][0])
-        assert_equal( 700.0, @eff02.diff_abs_pairs[5][0])
-        assert_equal( 900.0, @eff02.diff_abs_pairs[6][0])
-        assert_equal( 500.0, @eff02.diff_abs_pairs[7][0])
+        #assert_equal(1500.0, @eff02.diff_abs_pairs[2][0])
+        assert_equal( 500.0, @eff02.diff_abs_pairs[2][0])
+        assert_equal( 600.0, @eff02.diff_abs_pairs[3][0])
+        assert_equal( 700.0, @eff02.diff_abs_pairs[4][0])
+        assert_equal( 900.0, @eff02.diff_abs_pairs[5][0])
+        assert_equal( 500.0, @eff02.diff_abs_pairs[6][0])
 
         assert_in_delta(0.001930, @eff02.diff_abs_pairs[0][1], $tolerance)
         assert_in_delta(0.001081, @eff02.diff_abs_pairs[1][1], $tolerance)
-        assert_in_delta(0.0         , @eff02.diff_abs_pairs[2][1], $tolerance)
-        assert_in_delta(0.038457, @eff02.diff_abs_pairs[3][1], $tolerance)
-        assert_in_delta(0.030196, @eff02.diff_abs_pairs[4][1], $tolerance)
-        assert_in_delta(0.013779, @eff02.diff_abs_pairs[5][1], $tolerance)
-        assert_in_delta(0.001336, @eff02.diff_abs_pairs[6][1], $tolerance)
-        assert_in_delta(0.038457, @eff02.diff_abs_pairs[7][1], $tolerance)
+        #assert_in_delta(0.0       , @eff02.diff_abs_pairs[2][1], $tolerance)
+        assert_in_delta(0.038457, @eff02.diff_abs_pairs[2][1], $tolerance)
+        assert_in_delta(0.030196, @eff02.diff_abs_pairs[3][1], $tolerance)
+        assert_in_delta(0.013779, @eff02.diff_abs_pairs[4][1], $tolerance)
+        assert_in_delta(0.001336, @eff02.diff_abs_pairs[5][1], $tolerance)
+        assert_in_delta(0.038457, @eff02.diff_abs_pairs[6][1], $tolerance)
     end
 
     def test_most_strict_pair

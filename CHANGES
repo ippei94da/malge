@@ -3,6 +3,7 @@
 == Master (for 0.0.9)
 * Add bin/analyzeerror
 * Add bin/multivariablefunction
+* Modify errorfittedfunction to ignore most strict pair at fitting.
 
 == Version 0.0.8 [2013-03-18] released
 * Small revision.

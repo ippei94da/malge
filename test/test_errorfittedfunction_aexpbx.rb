@@ -68,7 +68,8 @@ class TC_ErrorFittedFunction_AExpBX < Test::Unit::TestCase
     end
 
     def test_variance
-        assert_in_delta( 0.25, @aebx00.variance, TOLERANCE)
+        assert_in_delta( 0.0, @aebx00.variance, TOLERANCE)
+        #assert_in_delta( 0.25, @aebx00.variance, TOLERANCE)
         #diff_abs = [4,1]
         #expected = [1,3]
     end

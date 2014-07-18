@@ -25,7 +25,11 @@ class Malge::ErrorFittedFunction
         end
 
         @raw_pairs = data_pairs
-        @diff_abs_pairs = data_pairs.map { |pair| [pair[0], (pair[1] - most_strict_pair[1]).abs] }
+        most_strict_x = most_strict_pair[0]
+        tmp_pairs = Marshal.load(Marshal.dump( data_pairs))
+        tmp_pairs.delete_if {|pair| pair[0] == most_strict_x}
+
+        @diff_abs_pairs = tmp_pairs.map { |pair| [pair[0], (pair[1] - most_strict_pair[1]).abs] }
         fit
 
         @coefficients.each do |coef|
@@ -52,6 +56,7 @@ class Malge::ErrorFittedFunction
     def variance
         sum = 0.0
         @diff_abs_pairs.each do |pair|
+            #pp pair
             sum += (pair[1] - expected_error(pair[0]) )**2
         end
         sum

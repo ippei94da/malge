@@ -12,8 +12,9 @@ class TC_ErrorFittedFunction_AXInv3 < Test::Unit::TestCase
     def setup
         @axi300 = Malge::ErrorFittedFunction::AXInv3.new(
             [
-                [1.0,       1.0],
-                [2.0**(-1.0/3.0), 3.0],
+                [(2.0 ** (-1.0/3.0)), 3.0],
+                [(2.0 ** ( 0      )), 1.0],
+                [(2.0 ** ( 1.0/3.0)), 1.0],
             ]
         )
     end
@@ -32,8 +33,8 @@ class TC_ErrorFittedFunction_AXInv3 < Test::Unit::TestCase
     end
 
     def test_most_strict_pair
-        assert_in_delta(    1.0, @axi300.most_strict_pair[0])
-        assert_in_delta(    1.0, @axi300.most_strict_pair[1])
+        assert_in_delta( (2.0 ** ( 1.0/3.0)), @axi300.most_strict_pair[0])
+        assert_in_delta( 1.0, @axi300.most_strict_pair[1])
     end
 
     def test_variance
