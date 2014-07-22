@@ -76,6 +76,20 @@ class Malge::ErrorFittedFunction
         @raw_pairs.mix_by{ |pair| pair[0] }
     end
 
+    # Compare expected error and @raw_pairs and
+    # return a count of estimations of [equal, over, under].
+    # (order is like as result of <=>. )
+    # Excluding last data.
+    def count_equal_under_over
+        results = [0,0,0]
+        @diff_abs_pairs.each do |x,y|
+            #pp expected_error(x)
+            #pp y
+            results[expected_error(x) <=> y ] += 1
+        end
+        results
+    end
+
     private
 
     #Fit the data pairs to a certain function.

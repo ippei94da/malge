@@ -129,6 +129,10 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
         assert_equal(-3.151397, @eff02.most_strict_pair[1])
     end
 
+    def test_count_equal_under_over
+        #pp @eff01
+        assert_equal([0, 1, 1], @eff01.count_equal_under_over)
+    end
 
     def test_initialize
         assert_raise(Malge::ErrorFittedFunction::NotImplementedError){
