@@ -64,9 +64,11 @@ if OPTIONS[:function] || OPTIONS[:variance]
         function = analyzer.new(data)
 
         results = []
-        results << sprintf("f#{i}(x) = %-40s", function.equation) if OPTIONS[:function]
-        results << sprintf("Variance#{i} = %15.6f", function.variance) if OPTIONS[:variance]
-        puts results.join(', ')
+        printf("f#{i}(x) = %-40s\n", function.equation) if OPTIONS[:function]
+        printf("Variance#{i} = %15.6f\n", function.variance) if OPTIONS[:variance]
+        #results << sprintf("f#{i}(x) = %-40s", function.equation) if OPTIONS[:function]
+        #results << sprintf("Variance#{i} = %15.6f", function.variance) if OPTIONS[:variance]
+        #puts results.join(', ')
     end
 end
 
@@ -107,10 +109,10 @@ if OPTIONS[:table]
     OPTIONS[:analyzer].size.times do |i|
         keys << "f#{i}"
     end
-    puts keys.map{|v| sprintf("%9s", v)}.join(" ")
+    puts keys.map{|v| sprintf("%10s", v)}.join(" ")
 
     ## Print values
     results.each do |items|
-        puts items.map{|v| sprintf("%9.5f", v)}.join(" ")
+        puts items.map{|v| sprintf("%10.6f", v)}.join(" ")
     end
 end
