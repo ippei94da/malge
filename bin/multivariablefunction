@@ -2,6 +2,7 @@
 # coding: utf-8
 
 require "optparse"
+require "csv"
 require 'pp'
 
 ## option analysis
@@ -36,9 +37,9 @@ op.on("-s values", "--show=values", "Show values with order."){ |v|
 #      "Absolute value of key."){ |v|
 #    OPTIONS[:absolute_value] = v
 #}
-#op.on("-c", "--csv", "Indicate input file format as CSV, not table."){
-#    OPTIONS[:csv] = true
-#}
+op.on("-c", "--csv", "Indicate input file format as CSV, not table."){
+    OPTIONS[:csv] = true
+}
 op.parse!(ARGV)
 
 if ARGV.empty?
@@ -60,8 +61,12 @@ if OPTIONS[:show].empty?
 end
 
 ## Read
-lines = File.readlines(ARGV[0]).map do |line|
-    line.strip.split(" ")
+if OPTIONS[:csv]
+    lines = CSV.read ARGV[0]
+else
+    lines = File.readlines(ARGV[0]).map do |line|
+        line.strip.split(" ")
+    end
 end
 
 ## Make Hash using 0th line as keys
