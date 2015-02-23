@@ -90,7 +90,7 @@ class TC_SimultaneousEquations < Test::Unit::TestCase
         # )
         #}
 
-        assert_raise( RuntimeError ){
+        assert_raise( Malge::SimultaneousEquations::SizeMismatchError ){
             Malge::SimultaneousEquations.cramer(
                 [ [ 1.0,    2.0, -3.0 ],
                     [ 2.0,  1.0, -2.0 ],

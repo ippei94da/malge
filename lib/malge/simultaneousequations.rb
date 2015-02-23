@@ -12,15 +12,30 @@ require "malge.rb"
 
 # 連立1次方程式を表現するクラス。
 class Malge::SimultaneousEquations
+
+    class NotRegularError < Exception; end
+    class SizeMismatchError < Exception; end
+    class NotSquareError < Exception; end
+
     
     # Solve equation by Cramer's.
     # matrix は2重配列で与える。
     # 返されるのは、解の値を格納した配列。
     def self.cramer( matrix, values )
         matrix = Malge::Matrix.rows( matrix )
-        raise "Matrix is not squre: #{matrix.row_size} x #{matrix.column_size}." if ( ! matrix.square? )
-        raise "Matrix size (#{matrix.row_size}) and values size (#{values.size}) mismatched." if ( matrix.row_size != values.size )
-        raise "Matrix is not regular. Degree of freedom is #{matrix.column_size - matrix.rank}.\n" if ( ! matrix.regular? )
+        if ( ! matrix.square? )
+            str = "Matrix is not squre: #{matrix.row_size} x #{matrix.column_size}."
+            raise NotSquareError, str
+        end
+        if ( matrix.row_size != values.size )
+            str = "Matrix size (#{matrix.row_size}) and values size (#{values.size}) mismatched."
+            raise SizeMismatchError, str
+        end
+        if ( ! matrix.regular? )
+            str = "Matrix is not regular. Degree of freedom is #{matrix.column_size - matrix.rank}.\n"
+            str += matrix.to_s
+            raise NotRegularError, str
+        end
 
         results = Array.new
         n = matrix.column_size
