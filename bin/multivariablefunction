@@ -15,28 +15,16 @@ op.banner = [
     "Usage: #{File.basename("#{__FILE__}")} file --show='item1,item2'",
     #"Argumented 'file' must have csv format and item names in the first line."
 ].join("\n")
-#op.on("-a"    , "--aho"    , "descriptionA"){    OPTIONS[:aho] = true}
 op.on("-f values", "--fix=values", "Print matching conditions."){ |v|
     conds = v.split(",")
     conds.each do |cond|
         key, val = cond.split("=")
-        #OPTIONS[:fix][key.downcase.to_sym] = val.to_f
         OPTIONS[:fix][key] = val
     end
 }
 op.on("-s values", "--show=values", "Show values with order."){ |v|
     OPTIONS[:show] = v.split(",")
 }
-#op.on("-d key,value",
-#      "--difference=key,value",
-#      "Difference between value of key."){ |v|
-#    OPTIONS[:difference] = v
-#}
-#op.on("-a key",
-#      "--absolute-value=key",
-#      "Absolute value of key."){ |v|
-#    OPTIONS[:absolute_value] = v
-#}
 op.on("-c", "--csv", "Indicate input file format as CSV, not table."){
     OPTIONS[:csv] = true
 }
