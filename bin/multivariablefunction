@@ -1,89 +1,89 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
-require "optparse"
-require "csv"
-require 'pp'
-
-## option analysis
-options = ARGV.dup
-OPTIONS = {}
-OPTIONS[:show] = []
-OPTIONS[:fix] = {}
-op = OptionParser.new
-op.banner = [
-    "Usage: #{File.basename("#{__FILE__}")} file --show='item1,item2'",
-    #"Argumented 'file' must have csv format and item names in the first line."
-].join("\n")
-op.on("-f values", "--fix=values", "Print matching conditions."){ |v|
-    conds = v.split(",")
-    conds.each do |cond|
-        key, val = cond.split("=")
-        OPTIONS[:fix][key] = val
-    end
-}
-op.on("-s values", "--show=values", "Show values with order."){ |v|
-    OPTIONS[:show] = v.split(",")
-}
-op.on("-c", "--csv", "Indicate input file format as CSV, not table."){
-    OPTIONS[:csv] = true
-}
-op.parse!(ARGV)
-
-if ARGV.empty?
-    puts "No input file."
-    puts op.banner
-    exit
-end
-
-unless FileTest.exist?(ARGV[0])
-    puts "File not found: #{ARGV[0]}"
-    puts op.banner
-    exit
-end
-
-if OPTIONS[:show].empty?
-    puts "No --show option found."
-    puts op.banner
-    exit
-end
-
-## Read
-if OPTIONS[:csv]
-    lines = CSV.read ARGV[0]
-else
-    lines = File.readlines(ARGV[0]).map do |line|
-        line.strip.split(" ")
-    end
-end
-
-## Make Hash using 0th line as keys
-keys = lines.shift
-data = lines.map do |i|
-    point = {}
-    keys.size.times do |j|
-        point[keys[j]] = i[j]
-    end
-    point
-end
-
-## Delete data unless match.
-data.delete_if do |row|
-    result = false
-    OPTIONS[:fix].each do |key, val|
-        result = true if row[key].to_f != val.to_f
-    end
-    result
-end
-
-## Show keys
-puts OPTIONS[:show].map { |key| sprintf("%15s", key) }.join(" ")
-
-## Show data
-data.each do |point|
-    strings = OPTIONS[:show].map { |key|
-        sprintf("%15.8f",  point[key])
-    }
-    puts strings.join(" ")
-end
-
+#require "optparse"
+#require "csv"
+#require 'pp'
+#
+### option analysis
+#options = ARGV.dup
+#OPTIONS = {}
+#OPTIONS[:show] = []
+#OPTIONS[:fix] = {}
+#op = OptionParser.new
+#op.banner = [
+#    "Usage: #{File.basename("#{__FILE__}")} file --show='item1,item2'",
+#    #"Argumented 'file' must have csv format and item names in the first line."
+#].join("\n")
+#op.on("-f values", "--fix=values", "Print matching conditions."){ |v|
+#    conds = v.split(",")
+#    conds.each do |cond|
+#        key, val = cond.split("=")
+#        OPTIONS[:fix][key] = val
+#    end
+#}
+#op.on("-s values", "--show=values", "Show values with order."){ |v|
+#    OPTIONS[:show] = v.split(",")
+#}
+#op.on("-c", "--csv", "Indicate input file format as CSV, not table."){
+#    OPTIONS[:csv] = true
+#}
+#op.parse!(ARGV)
+#
+#if ARGV.empty?
+#    puts "No input file."
+#    puts op.banner
+#    exit
+#end
+#
+#unless FileTest.exist?(ARGV[0])
+#    puts "File not found: #{ARGV[0]}"
+#    puts op.banner
+#    exit
+#end
+#
+#if OPTIONS[:show].empty?
+#    puts "No --show option found."
+#    puts op.banner
+#    exit
+#end
+#
+### Read
+#if OPTIONS[:csv]
+#    lines = CSV.read ARGV[0]
+#else
+#    lines = File.readlines(ARGV[0]).map do |line|
+#        line.strip.split(" ")
+#    end
+#end
+#
+### Make Hash using 0th line as keys
+#keys = lines.shift
+#data = lines.map do |i|
+#    point = {}
+#    keys.size.times do |j|
+#        point[keys[j]] = i[j]
+#    end
+#    point
+#end
+#
+### Delete data unless match.
+#data.delete_if do |row|
+#    result = false
+#    OPTIONS[:fix].each do |key, val|
+#        result = true if row[key].to_f != val.to_f
+#    end
+#    result
+#end
+#
+### Show keys
+#puts OPTIONS[:show].map { |key| sprintf("%15s", key) }.join(" ")
+#
+### Show data
+#data.each do |point|
+#    strings = OPTIONS[:show].map { |key|
+#        sprintf("%15.8f",  point[key])
+#    }
+#    puts strings.join(" ")
+#end
+#
