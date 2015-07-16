@@ -8,9 +8,9 @@ class Malge::MultiVariableFunction
   #
   # data example:
   #   [
-  #     {x => 0.0, y = >0.1, z => 0.0},
-  #     {x => 1.0, y = >1.1, z => 1.0},
-  #     {x => 2.0, y = >2.1, z => 3.0},
+  #     {x => 0.0, y => 0.1, z => 0.0},
+  #     {x => 1.0, y => 1.1, z => 1.0},
+  #     {x => 2.0, y => 2.1, z => 3.0},
   #   ]
   #
   def initialize(data)
@@ -20,7 +20,7 @@ class Malge::MultiVariableFunction
   # Return array of data which matches the hash.
   def abstract(conditions)
     results = @data.select do |coords|
-      match_condition?(coord, conditions)
+      match_condition?(coords, conditions)
     end
     results
   end
