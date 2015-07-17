@@ -83,12 +83,38 @@ class Malge::ErrorFittedFunction
     def count_equal_under_over
         results = [0,0,0]
         @diff_abs_pairs.each do |x,y|
-            #pp expected_error(x)
-            #pp y
             results[expected_error(x) <=> y ] += 1
         end
         results
     end
+
+    def summary(io = $stdout)
+      io.puts "Fitted function: #{equation}"
+      io.printf("%15s, %15s, %15s, %15s\n",
+             "x",
+             "raw_y",
+             "diff_y_best",
+             "expected_error"
+            )
+
+      datalist = []
+      @raw_pairs.size.times do |i|
+        if i != (@raw_pairs.size - 1)
+          diff = sprintf("%15.10f", @diff_abs_pairs[i][1])
+        else
+          diff = '-'*12
+        end
+
+        datalist << sprintf("%15.10f, %15.10f, %15s, %15.10f\n",
+               @raw_pairs[i][0],
+               @raw_pairs[i][1],
+               diff, 
+               expected_error(@raw_pairs[i][0])
+              )
+      end
+      io.puts datalist.sort.join
+    end
+
 
     private
 

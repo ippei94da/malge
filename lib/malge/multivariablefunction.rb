@@ -7,6 +7,8 @@
 class Malge::MultiVariableFunction
   attr_reader :data
 
+  TOLERANCE = 1E-10
+
   # data example:
   #   [
   #     {x => 0.0, y => 0.1, z => 0.0},
@@ -19,17 +21,23 @@ class Malge::MultiVariableFunction
   end
 
   # Return array of data which matches the hash.
-  def abstract(conditions)
+  def abstract!(conditions)
     results = @data.select do |coords|
       match_condition?(coords, conditions)
     end
-    self.class.new(results)
+    @data = results
+  end
+
+  def abstract(conditions)
+    result = Marshal.load(Marshal.dump(self))
+    result.abstract!(conditions)
+    result
   end
 
   # unite axes with the same value.
   # keys : [:a, :b]
   # new_key : default is keys[0]
-  def unite_axes(keys, new_key = nil)
+  def unite_axes!(keys, new_key = nil)
     new_key ||= keys[0]
     results = []
     @data.each do |datum|
@@ -41,17 +49,49 @@ class Malge::MultiVariableFunction
         results << new_datum
       end
     end
-    self.class.new(results)
+    @data = results
+  end
+
+  def unite_axes(keys, new_key = nil)
+    result = Marshal.load(Marshal.dump(self))
+    result.unite_axes!(keys, new_key)
+    result
+  end
+
+  def delete_axis!(axis)
+    @data.each do |datum|
+      datum.delete axis
+    end
+  end
+
+  def delete_axis(axis)
+    result = Marshal.load(Marshal.dump(self))
+    result.delete_axis!(axis)
+    result
+  end
+
+  # return 2-dimensional array.
+  # [
+  #   [x0, y0],
+  #   [x1, y1],
+  #   :
+  # ]
+  def data_pairs(key0, key1)
+    results = []
+    @data.each do |datum|
+      results << [datum[key0], datum[key1]]
+    end
+    results
   end
 
   private
 
   #if when the same value among keys, return true.
   #if not, return false.
-  def same?(datum, keys)
+  def same?(datum, keys, tolerance = TOLERANCE)
     ref = datum[keys[0]]
     keys.each do |key|
-      return false unless ref == datum[key]
+      return false unless ref.to_f.equal_in_delta?(datum[key].to_f, tolerance)
     end
     return true
   end

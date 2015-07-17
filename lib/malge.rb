@@ -1,5 +1,6 @@
 module Malge; end
 
+require "float/equalindelta.rb"
 require "malge/errorfittedfunction.rb"
 require "malge/errorfittedfunction/aexpbx.rb"
 require "malge/errorfittedfunction/aexpbx32.rb"

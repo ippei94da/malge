@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 # coding: utf-8
 
+require "pp"
 require "helper"
 #require "test/unit"
 #require "malge.rb"
@@ -21,6 +22,10 @@ class Malge::ErrorFittedFunction::Dummy01 < Malge::ErrorFittedFunction
     #x = 1/2( y - 1.0)
     def x(y)
         return 1.0/2.0 * (y - 1.0)
+    end
+
+    def equation
+      "x = 1/2( y - 1.0)"
     end
 
     #Assume: y = 1.0 + 2.0 * x
@@ -54,6 +59,30 @@ class Malge::ErrorFittedFunction::Dummy02 < Malge::ErrorFittedFunction
     def most_strict_pair
         @raw_pairs.max_by { |pair| pair[0] }
     end
+end
+
+class Malge::ErrorFittedFunction::Dummy03 < Malge::ErrorFittedFunction
+    $tolerance = 1E-10
+
+    def expected_error(x)
+        @coefficients[0] + @coefficients[1] * x
+    end
+
+    #Assume: y = 1.0 + 2.0 * x
+    #x = 1/2( y - 1.0)
+    def x(y)
+        return 1.0/2.0 * (y - 1.0)
+    end
+
+    #Assume: y = 1.0 + 2.0 * x
+    def fit
+        @coefficients = [1.0, 2.0]
+    end
+
+    def most_strict_pair
+        @raw_pairs.max_by{ |pair| pair[0] }
+    end
+
 end
 
 
@@ -95,8 +124,15 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
     end
 
     def test_equation
+        eff = Malge::ErrorFittedFunction::Dummy03.new(
+            [
+                [0.0, 0.0],
+                [1.0, 5.0],
+                [2.0, 4.0],
+            ]
+        )
         assert_raise(Malge::ErrorFittedFunction::NotImplementedError){
-            @eff01.equation
+            eff.equation
         }
     end
 
@@ -155,6 +191,13 @@ class TC_ErrorFittedFunction < Test::Unit::TestCase
         assert_raise(Malge::ErrorFittedFunction::UnableCalculationError){
             Malge::ErrorFittedFunction::Dummy02.new([[1,2]])
         }
+    end
+
+    def test_summary
+      io = StringIO.new
+      @eff01.summary(io)
+      io.rewind
+      pp io.readlines
     end
 
 end
