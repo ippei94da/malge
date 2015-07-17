@@ -5,6 +5,11 @@ require "helper"
 #require "test/unit"
 #require "pkg/klass.rb"
 
+
+class Malge::MultiVariableFunction
+  public :same?
+end
+
 class TC_MultiVariableFunction < Test::Unit::TestCase
   def setup
     @mvf00 = Malge::MultiVariableFunction.new(
@@ -26,7 +31,7 @@ class TC_MultiVariableFunction < Test::Unit::TestCase
       [
         {:a => 0.0, :b => 0.0, :c => 0.0, :z => 0.0 }
       ],
-      @mvf00.abstract({:a => 0.0, :b => 0.0, :c => 0.0})
+      @mvf00.abstract({:a => 0.0, :b => 0.0, :c => 0.0}).data
     )
 
     assert_equal(
@@ -34,7 +39,7 @@ class TC_MultiVariableFunction < Test::Unit::TestCase
         {:a => 0.0, :b => 0.0, :c => 0.0, :z => 0.0 },
         {:a => 0.0, :b => 0.0, :c => 1.0, :z => 1.0 },
       ],
-      @mvf00.abstract({:a => 0.0, :b => 0.0})
+      @mvf00.abstract({:a => 0.0, :b => 0.0}).data
     )
 
     assert_equal(
@@ -44,7 +49,7 @@ class TC_MultiVariableFunction < Test::Unit::TestCase
         {:a => 0.0, :b => 1.0, :c => 0.0, :z => 2.0 },
         {:a => 0.0, :b => 1.0, :c => 1.0, :z => 3.0 },
       ],
-      @mvf00.abstract({:a => 0.0})
+      @mvf00.abstract({:a => 0.0}).data
     )
 
     assert_equal(
@@ -58,10 +63,100 @@ class TC_MultiVariableFunction < Test::Unit::TestCase
         {:a => 1.0, :b => 1.0, :c => 0.0, :z => 6.0 },
         {:a => 1.0, :b => 1.0, :c => 1.0, :z => 7.0 },
       ],
-      @mvf00.abstract({})
+      @mvf00.abstract({}).data
     )
 
-    assert_equal( [], @mvf00.abstract({:a => 2.0}))
+    assert_equal( [], @mvf00.abstract({:a => 2.0}).data)
   end
+
+  def test_unite_axes
+    assert_equal(
+      [
+        {:a => 0.0, :z => 0.0 },
+        {:a => 1.0, :z => 7.0 },
+      ],
+      @mvf00.unite_axes([:a, :b, :c]).data
+    )
+    #check not destructive.
+    assert_equal(
+      [
+        {:a => 0.0, :b => 0.0, :c => 0.0, :z => 0.0 },
+        {:a => 0.0, :b => 0.0, :c => 1.0, :z => 1.0 },
+        {:a => 0.0, :b => 1.0, :c => 0.0, :z => 2.0 },
+        {:a => 0.0, :b => 1.0, :c => 1.0, :z => 3.0 },
+        {:a => 1.0, :b => 0.0, :c => 0.0, :z => 4.0 },
+        {:a => 1.0, :b => 0.0, :c => 1.0, :z => 5.0 },
+        {:a => 1.0, :b => 1.0, :c => 0.0, :z => 6.0 },
+        {:a => 1.0, :b => 1.0, :c => 1.0, :z => 7.0 },
+      ],
+      @mvf00.data
+    )
+
+    assert_equal(
+      [
+        {:ab => 0.0, :c => 0.0, :z => 0.0 },
+        {:ab => 0.0, :c => 1.0, :z => 1.0 },
+        {:ab => 1.0, :c => 0.0, :z => 6.0 },
+        {:ab => 1.0, :c => 1.0, :z => 7.0 },
+      ],
+      @mvf00.unite_axes([:a, :b], :ab).data
+    )
+
+    assert_equal(
+      [
+        {:a => 0.0, :c => 0.0, :z => 0.0 },
+        {:a => 0.0, :c => 1.0, :z => 1.0 },
+        {:a => 1.0, :c => 0.0, :z => 6.0 },
+        {:a => 1.0, :c => 1.0, :z => 7.0 },
+      ],
+      @mvf00.unite_axes([:a, :b]).data
+    )
+  end
+
+
+  def test_same?
+    assert_equal(
+      true,
+      @mvf00.same?({:a => 0.0, :b => 0.0, :c => 0.0, :z => 0.0 }, [:a, :b])
+    )
+
+    assert_equal(
+      true,
+      @mvf00.same?({:a => 0.0, :b => 0.0, :c => 1.0, :z => 1.0 }, [:a, :b])
+    )
+    assert_equal(
+      false,
+      @mvf00.same?({:a => 0.0, :b => 1.0, :c => 0.0, :z => 2.0 }, [:a, :b])
+    )
+    assert_equal(
+      false,
+      @mvf00.same?({:a => 0.0, :b => 1.0, :c => 1.0, :z => 3.0 }, [:a, :b])
+    )
+    assert_equal(
+      false,
+      @mvf00.same?({:a => 1.0, :b => 0.0, :c => 0.0, :z => 4.0 }, [:a, :b])
+    )
+    assert_equal(
+      false,
+      @mvf00.same?({:a => 1.0, :b => 0.0, :c => 1.0, :z => 5.0 }, [:a, :b])
+    )
+    assert_equal(
+      true,
+      @mvf00.same?({:a => 1.0, :b => 1.0, :c => 0.0, :z => 6.0 }, [:a, :b])
+    )
+    assert_equal(
+      true,
+      @mvf00.same?({:a => 1.0, :b => 1.0, :c => 1.0, :z => 7.0 }, [:a, :b])
+    )
+
+
+    # equal in float
+    assert_equal(
+      true,
+      @mvf00.same?({:a => 1E-15, :b => 0.0, :c => 0.0, :z => 0.0 }, [:a, :b])
+    )
+
+  end
+
 end
 
