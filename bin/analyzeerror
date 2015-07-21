@@ -10,109 +10,109 @@ OPTIONS = {}
 OPTIONS[:analyzer] = []
 op = OptionParser.new
 op.banner = [
-    "Usage: #{File.basename("#{__FILE__}")}",
+  "Usage: #{File.basename("#{__FILE__}")}",
 ].join("\n")
 op.on("--aexpbx"  , "Assume y = a[0] * exp(a[1] *x)         "){
-    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AExpBX
+  OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AExpBX
 }
 op.on("--aexpbx32", "Assume y = a[0] * exp(a[1] * (x^(3/2)))"){
-    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AExpBX32
+  OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AExpBX32
 }
 op.on("--axinv"   , "Assume y = a[0]/x                      "){
-    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv
+  OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv
 }
 op.on("--axinv2"  , "Assume y = a[0] /(x^2)                 "){
-    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv2
+  OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv2
 }
 op.on("--axinv3"  , "Assume y = a[0]/(x^3)                  "){
-    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv3
+  OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv3
 }
 op.on("--axinv4"  , "Assume y = a[0]/(x^4)                  "){
-    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv4
+  OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv4
 }
 op.on("--axinv32" , "Assume y = a[0] /x^(3/2)               "){
-    OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv32
+  OPTIONS[:analyzer] << Malge::ErrorFittedFunction::AXInv32
 }
 op.on("-f", "--show-function" , "Show function"){
-    OPTIONS[:function] = true
+  OPTIONS[:function] = true
 }
 op.on("-v", "--show-variance" , "Show variance"){
-    OPTIONS[:variance] = true
+  OPTIONS[:variance] = true
 }
 op.on("-t", "--show-table" , "Show table"){
-    OPTIONS[:table] = true
+  OPTIONS[:table] = true
 }
 op.on("-o", "--show-over-under" , "Show over and under"){
-    OPTIONS[:over] = true
+  OPTIONS[:over] = true
 }
 op.parse!(ARGV)
 
 if OPTIONS[:analyzer].empty?
-    puts "No assumed function type."
-    exit
+  puts "No assumed function type."
+  exit
 end
 
 data = File.readlines(ARGV[0]).map{|line| line.strip.split(" ")}
 keys = data.shift
 data.each do |datum|
-    datum.map! {|datum| datum.to_f}
+  datum.map! {|datum| datum.to_f}
 end
 
 if OPTIONS[:function] || OPTIONS[:variance] 
-    OPTIONS[:analyzer].size.times do |i|
-        analyzer = OPTIONS[:analyzer][i]
-        function = analyzer.new(data)
+  OPTIONS[:analyzer].size.times do |i|
+    analyzer = OPTIONS[:analyzer][i]
+    function = analyzer.new(data)
 
-        results = []
-        printf("f#{i}(x) = %-40s\n", function.equation) if OPTIONS[:function]
-        printf("Variance#{i} = %15.6f\n", function.variance) if OPTIONS[:variance]
-        #results << sprintf("f#{i}(x) = %-40s", function.equation) if OPTIONS[:function]
-        #results << sprintf("Variance#{i} = %15.6f", function.variance) if OPTIONS[:variance]
-        #puts results.join(', ')
-    end
+    results = []
+    printf("f#{i}(x) = %-40s\n", function.equation) if OPTIONS[:function]
+    printf("Variance#{i} = %15.6f\n", function.variance) if OPTIONS[:variance]
+    #results << sprintf("f#{i}(x) = %-40s", function.equation) if OPTIONS[:function]
+    #results << sprintf("Variance#{i} = %15.6f", function.variance) if OPTIONS[:variance]
+    #puts results.join(', ')
+  end
 end
 
 if OPTIONS[:over]
-    OPTIONS[:analyzer].size.times do |i|
-        analyzer = OPTIONS[:analyzer][i]
-        function = analyzer.new(data)
-        comparisons = function.count_equal_under_over
-        puts "    point(+, over)     : #{comparisons[-1]}"
-        puts "----function-curve---- : #{comparisons[ 0]}"
-        puts "    point(-, under)    : #{comparisons[ 1]}"
-    end
+  OPTIONS[:analyzer].size.times do |i|
+    analyzer = OPTIONS[:analyzer][i]
+    function = analyzer.new(data)
+    comparisons = function.count_equal_under_over
+    puts "    point(+, over)     : #{comparisons[-1]}"
+    puts "----function-curve---- : #{comparisons[ 0]}"
+    puts "    point(-, under)    : #{comparisons[ 1]}"
+  end
 end
 
 if OPTIONS[:table]
-    results = Marshal.load(Marshal.dump(data))
-    results = results.sort_by{|v| v[0]}
+  results = Marshal.load(Marshal.dump(data))
+  results = results.sort_by{|v| v[0]}
 
-    ## |diff|
-    last_y = results[-1][1]
-    results.map! do |values| 
-        values << (values[1] - last_y).abs
-    end
+  ## |diff|
+  last_y = results[-1][1]
+  results.map! do |values| 
+    values << (values[1] - last_y).abs
+  end
 
-    ## Calculate values
-    OPTIONS[:analyzer].size.times do |i|
-        analyzer = OPTIONS[:analyzer][i]
-        function = analyzer.new(data)
+  ## Calculate values
+  OPTIONS[:analyzer].size.times do |i|
+    analyzer = OPTIONS[:analyzer][i]
+    function = analyzer.new(data)
 
-        results.each do |items|
-            x = items[0]
-            items << function.expected_error(x)
-        end
-    end
-
-    ## Print keys
-    keys = ["x", "y", "|d_last|"]
-    OPTIONS[:analyzer].size.times do |i|
-        keys << "f#{i}"
-    end
-    puts keys.map{|v| sprintf("%10s", v)}.join(" ")
-
-    ## Print values
     results.each do |items|
-        puts items.map{|v| sprintf("%10.6f", v)}.join(" ")
+      x = items[0]
+      items << function.expected_error(x)
     end
+  end
+
+  ## Print keys
+  keys = ["x", "y", "|d_last|"]
+  OPTIONS[:analyzer].size.times do |i|
+    keys << "f#{i}"
+  end
+  puts keys.map{|v| sprintf("%10s", v)}.join(" ")
+
+  ## Print values
+  results.each do |items|
+    puts items.map{|v| sprintf("%10.6f", v)}.join(" ")
+  end
 end
