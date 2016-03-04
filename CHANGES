@@ -1,13 +1,12 @@
 = malge changelog
 
-== Master (for 0.0.9)
-* Add bin/analyzeerror
+== Master (for 0.0.10)
+
+== Version 0.0.9 [2016-03-04] released
 * Modify errorfittedfunction to ignore most strict pair at fitting.
 * Malge::SimultaneousEquations::NotRegularError   is added
 * Malge::SimultaneousEquations::SizeMismatchError is added
 * Malge::SimultaneousEquations::NotSquareError    is added
-#* Add bin/multivariablefunction
-* Add lib/multivariablefunction.rb
 
 == Version 0.0.8 [2013-03-18] released
 * Small revision.
