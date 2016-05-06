@@ -1,5 +1,5 @@
 require "matrix"
-require "malge.rb"
+#require "malge.rb"
 
 class Malge::Matrix < Matrix
   def []=(i,j,x)

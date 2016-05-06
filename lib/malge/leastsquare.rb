@@ -40,7 +40,7 @@ module Malge::LeastSquare
   def self.least_square_proportional(data_pairs)
     a = 0.0 #x^2
     d = 0.0 #x*y
-    n = data_pairs.size
+    #n = data_pairs.size
     data_pairs.each do |pairs|
       x = pairs[0].to_f
       y = pairs[1].to_f

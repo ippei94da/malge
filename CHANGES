@@ -1,6 +1,8 @@
 = malge changelog
 
 == Master (for 0.0.10)
+* Circular dependency of malge itself is deleted
+* Meaningless codes are deleted
 
 == Version 0.0.9 [2016-03-04] released
 * Modify errorfittedfunction to ignore most strict pair at fitting.

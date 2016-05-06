@@ -1,4 +1,4 @@
-require "malge.rb"
+#require "malge.rb"
 
 # Solve simultatneous equations with Cramer\'s formula.
 #

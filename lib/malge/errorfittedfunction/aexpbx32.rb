@@ -23,7 +23,7 @@ class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
   end
 
   def expected_error(x)
-    @coefficients[0] * Math::exp( @coefficients[1] * x **(3.0/2.0))
+    @coefficients[0] * Math::exp( @coefficients[1] * x ** (3.0/2.0))
   end
 
   #y = a[0] * exp(a[1] *x**(3/2))
@@ -33,7 +33,7 @@ class Malge::ErrorFittedFunction::AExpBX32 < Malge::ErrorFittedFunction
   #x**(3/2) = log( y/a[0])/a[1]
   #x = (log( y/a[0])/a[1])**(2/3)
   def x(y)
-    return (Math::log( y / @coefficients[0])/@coefficients[1]) **(2.0/3.0)
+    return (Math::log( y / @coefficients[0])/@coefficients[1]) ** (2.0/3.0)
   end
 
   def most_strict_pair

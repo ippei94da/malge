@@ -1,4 +1,4 @@
-require "malge.rb"
+#require "malge.rb"
 
 class Malge::Vector
   def []=(i,x)
