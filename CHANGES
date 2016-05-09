@@ -1,6 +1,8 @@
 = malge changelog
 
-== Master (for 0.0.10)
+== Master (for 0.0.11)
+
+== Version 0.0.10 [2016-05-09] released
 * Circular dependency of malge itself is deleted
 * Meaningless codes are deleted
 
